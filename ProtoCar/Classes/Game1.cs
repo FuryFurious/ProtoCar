@@ -2,6 +2,7 @@
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Graphics;
 using SharpDX.Toolkit.Input;
+using SharpDX.XInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +13,7 @@ namespace ProtoCar
 {
     class Game1 : Game
     {
-        GraphicsDeviceManager gManager;
-        GeometricPrimitive prime;
-        Camera cam;
-
-        BasicEffect bEffect;
+        public static GraphicsDeviceManager gManager;
 
         public static KeyboardManager keyboardManager;
         public static KeyboardState keyboardState;
@@ -26,70 +23,116 @@ namespace ProtoCar
 
         public static Texture2D stoneTexture;
 
+        public static int width = 800;
+        public static int height = 600;
+
+        Player player1;
+        Player player2;
+
+        GeometricPrimitive primitive;
+
+        int index = 0;
+
         public Game1()
         {
-            this.gManager = new GraphicsDeviceManager(this);
+            gManager = new GraphicsDeviceManager(this);
             keyboardManager = new KeyboardManager(this);
             mouseManager = new MouseManager(this);
+
+            Content.RootDirectory = "Content";
+
+            gManager.PreferredBackBufferWidth = width;
+            gManager.PreferredBackBufferHeight = height;
+
         }
 
         protected override void Initialize()
         {
+            Window.Title = "ProtoCar";
+
+
+            player1 = new Player(new PlayerWASD());
+            player2 = new Player(new PlayerArrow());
+
+            primitive = GeometricPrimitive.Plane.New(GraphicsDevice, 4.0f, 4.0f, 1, false);
+    
             base.Initialize();
-            Content.RootDirectory = "Content";
         }
 
         protected override void LoadContent()
         {
             base.LoadContent();
+      
 
-            cam = new Camera(GraphicsDevice, new SharpDX.Vector3(0,0,0));
-            prime = GeometricPrimitive.Teapot.New(GraphicsDevice, 1, 8, false);
             stoneTexture = Content.Load<Texture2D>("Stone.png");
 
-            bEffect = new BasicEffect(GraphicsDevice);
-
-            bEffect.SpecularColor = new Vector3(0,0,0);
-            bEffect.EnableDefaultLighting();
-            bEffect.Texture = stoneTexture;
-            bEffect.TextureEnabled = true;
-
+    
+  
         }
 
         protected override void Update(GameTime gameTime)
         {
             keyboardState = keyboardManager.GetState();
             mouseState = mouseManager.GetState();
-
-            cam.update();
+;
 
             if (keyboardState.IsKeyDown(Keys.Escape))
                 Exit();
 
-            if (keyboardState.IsKeyDown(Keys.W))
-                cam.move(-Vector3.UnitZ * 0.1f);
 
-            else if (keyboardState.IsKeyDown(Keys.S))
-                cam.move(Vector3.UnitZ * 0.1f);
+            player1.update(gameTime);
+            player2.update(gameTime);
 
-            if (keyboardState.IsKeyDown(Keys.A))
-                cam.move(-Vector3.UnitX * 0.1f);
 
-            else if (keyboardState.IsKeyDown(Keys.D))
-                cam.move(Vector3.UnitX * 0.1f);
+
+            
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.SetRasterizerState(GraphicsDevice.RasterizerStates.CullNone);
 
-            bEffect.World = Matrix.RotationY((float)gameTime.TotalGameTime.TotalSeconds);
-            bEffect.View = cam.view;
-            bEffect.Projection = cam.projection;
+            //plane stuff
+            BasicEffect bEffect = new BasicEffect(GraphicsDevice);
+
+            bEffect.EnableDefaultLighting();
+            bEffect.TextureEnabled = true;
+            bEffect.Texture = stoneTexture;
+
+            //view for playr1
+            GraphicsDevice.SetViewport(new ViewportF(0, 0, 400, 300));
+
+            bEffect.View = player1.bEffect.View;
+            bEffect.Projection = player1.bEffect.Projection;
+
+            bEffect.World = Matrix.RotationX((float)Math.PI / 2);
+            primitive.Draw(bEffect);
+
+            bEffect.World = player2.world;
+            player2.primitive.Draw(bEffect);
+ 
+
+            //view for player 2
+            GraphicsDevice.SetViewport(new ViewportF(400, 0, 400, 300));
+
+            bEffect.View = player2.bEffect.View;
+            bEffect.Projection = player2.bEffect.Projection;
+
+            bEffect.World = Matrix.RotationX((float)Math.PI / 2);
+            primitive.Draw(bEffect);
+  //       
+
+            bEffect.World = player1.world;
+            player1.primitive.Draw(bEffect);
+
+
+
+  
             
-            prime.Draw(bEffect);
+
             base.Draw(gameTime);
         }
     }
