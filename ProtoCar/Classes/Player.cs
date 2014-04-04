@@ -34,7 +34,7 @@ namespace ProtoCar
             
         }
 
-        public void update(GameTime gameTime)
+        public void update(GameTime gameTime, bool useMouse)
         {
             if(controler.moveLeft())
                 cam.move(-Vector3.UnitX * speed);
@@ -48,8 +48,11 @@ namespace ProtoCar
             else if (controler.moveDown())
                 cam.move(Vector3.UnitZ * speed);
 
-           
-           cam.update();
+
+            if (useMouse)
+                cam.update();
+            else
+                cam.updateMatrices();
         
 
         
