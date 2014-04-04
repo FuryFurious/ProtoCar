@@ -11,6 +11,8 @@ namespace ProtoCar
     {
         GraphicsDeviceManager gManager;
 
+        
+
         public Game1()
         {
             this.gManager = new GraphicsDeviceManager(this);
