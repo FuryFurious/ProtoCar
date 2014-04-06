@@ -14,6 +14,7 @@ namespace ProtoCar
     class Game1 : Game
     {
         public static GraphicsDeviceManager gManager;
+        public static SpriteBatch spriteBatch;
 
         public static KeyboardManager keyboardManager;
         public static KeyboardState keyboardState;
@@ -22,12 +23,14 @@ namespace ProtoCar
         public static MouseState mouseState;
 
         public static Texture2D stoneTexture;
+        public static Texture2D hud;
 
         public static int width = 800;
         public static int height = 600;
 
         Player player1;
         Player player2;
+        List<Item> items;
 
         GeometricPrimitive primitive;
 
@@ -49,9 +52,11 @@ namespace ProtoCar
         protected override void Initialize()
         {
             Window.Title = "ProtoCar";
+            spriteBatch = new SpriteBatch(GraphicsDevice);
 
             player1 = new Player(new PlayerWASD());
             player2 = new Player(new PlayerArrow());
+            items = new List<Item>() { new Item(new Vector3(0, 0, 10)) };
 
             primitive = GeometricPrimitive.Plane.New(GraphicsDevice, 16.0f, 16.0f, 1, false);
     
@@ -64,6 +69,7 @@ namespace ProtoCar
       
 
             stoneTexture = Content.Load<Texture2D>("Stone.png");
+            hud = Content.Load<Texture2D>("hud.png");
         }
 
         protected override void Update(GameTime gameTime)
@@ -84,6 +90,8 @@ namespace ProtoCar
 
             player1.update(gameTime, index == 0);
             player2.update(gameTime, index == 1);
+            foreach (Item item in items)
+                item.update(gameTime);
 
 
             base.Update(gameTime);
@@ -112,6 +120,10 @@ namespace ProtoCar
 
             bEffect.World = player2.world;
             player2.primitive.Draw(bEffect);
+
+            spriteBatch.Begin();
+            spriteBatch.Draw(hud, new Vector2(0, 500), Color.White);
+            spriteBatch.End();
  
 
             //view for player 2
@@ -126,10 +138,15 @@ namespace ProtoCar
             bEffect.World = player1.world;
             player1.primitive.Draw(bEffect);
 
+            foreach (Item item in items)
+                item.draw(gameTime);
+
+            spriteBatch.Begin();
+            spriteBatch.Draw(hud, new Vector2(0, 500), Color.White);
+            spriteBatch.End();
 
 
-  
-            
+      
 
             base.Draw(gameTime);
         }
