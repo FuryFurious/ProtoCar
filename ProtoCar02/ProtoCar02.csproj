@@ -13,7 +13,7 @@
     <AssemblyName>ProtoCar02</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <!-- Platform Dependent Properties -->
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -33,7 +33,13 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SharpDX.XInput">
+      <HintPath>..\..\..\..\..\..\Frameworks\SharpDx\Bin\DirectX11-net40\SharpDX.XInput.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,12 +49,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\Camera.cs" />
+    <Compile Include="Classes\Components\Camera.cs" />
     <Compile Include="Classes\Game1.cs" />
+    <Compile Include="Classes\GameStates\InGame.cs" />
+    <Compile Include="Classes\GameStates\Sandbox.cs" />
     <Compile Include="Classes\Helper.cs" />
-    <Compile Include="Classes\Item.cs" />
-    <Compile Include="Classes\Player.cs" />
-    <Compile Include="Classes\PlayerControler.cs" />
+    <Compile Include="Classes\IGameState.cs" />
+    <Compile Include="Classes\Components\Item.cs" />
+    <Compile Include="Classes\Components\Player.cs" />
+    <Compile Include="Classes\Components\PlayerControler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -62,6 +71,16 @@
   </ItemGroup>
   <ItemGroup>
     <ToolkitFont Include="Content\Arial16.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ToolkitModel Include="Content\skydome.3DS">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </ToolkitModel>
+  </ItemGroup>
+  <ItemGroup>
+    <ToolkitTexture Include="Content\sky.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </ToolkitTexture>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SharpDXSdkDir)\SharpDX.targets" />

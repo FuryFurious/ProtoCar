@@ -1,4 +1,5 @@
-﻿using SharpDX.Toolkit.Input;
+﻿using SharpDX;
+using SharpDX.Toolkit.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,6 +54,7 @@ namespace ProtoCar
         {
             return Game1.keyboardState.IsKeyDown(Keys.Down);
         }
+
     }
 
 

@@ -51,7 +51,9 @@ namespace ProtoCar
             float dy = mousePos.Y - oldMouseY;
             rotation.X -= rotationSpeed * dy;
 
-            resetMouse();
+            if(Game1.active)
+                resetMouse();
+
             updateMatrices();
         }
 

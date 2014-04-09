@@ -14,6 +14,7 @@ namespace ProtoCar
     {
         //TODO: dont make everything public static... but for prototyping its the easiest way
         public static GraphicsDeviceManager gManager;
+
         public static SpriteBatch spriteBatch;
 
         public static KeyboardManager keyboardManager;
@@ -22,23 +23,25 @@ namespace ProtoCar
         public static MouseManager mouseManager;
         public static MouseState mouseState;
 
-        public static Texture2D stoneTexture;
-        public static Texture2D hud;
-
         public static int width = 800;
         public static int height = 600;
 
-        Player player1;
-        Player player2;
-        List<Item> items;
+        public static BlendState alphaBlend;
+        public static BlendState opaqueBlend;
 
-        //plane
-        GeometricPrimitive primitive;
+        public static bool active = false;
 
-        int index = 0;
+        public static Texture2D stoneTexture;
+        public static Texture2D hud;
+        public static SpriteFont font;
 
-        BlendState alphaBlend;
-        BlendState opaqueBlend;
+        public static Model skydome;
+
+        //assign this variable, to start with a different gameState
+        EGameState currentState = EGameState.Sandbox;
+        EGameState prevState;
+
+        IGameState gameState;
 
         public Game1()
         {
@@ -50,29 +53,40 @@ namespace ProtoCar
 
             gManager.PreferredBackBufferWidth = width;
             gManager.PreferredBackBufferHeight = height;
+
+        }
+
+        private void gainedFocus(object sender, EventArgs e)
+        {
+            active = true;
+        }
+
+        private void lostFocus(object sender, EventArgs e)
+        {
+            active = false;
         }
 
         protected override void Initialize()
         {
             Window.Title = "ProtoCar";
+            Window.Deactivated += lostFocus;
+            Window.Activated += gainedFocus;
+
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            player1 = new Player(new PlayerWASD());
-            player2 = new Player(new PlayerArrow());
-            items = new List<Item>() { new Item(new Vector3(0, 0, 10)) };
-
-            primitive = GeometricPrimitive.Plane.New(GraphicsDevice, 16.0f, 16.0f, 1, false);
-    
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
             base.LoadContent();
-      
 
+            font = Content.Load<SpriteFont>("Arial16");
             stoneTexture = Content.Load<Texture2D>("Stone");
             hud = Content.Load<Texture2D>("hud");
+            skydome = Content.Load<Model>("skydome");
+
+          //  BasicEffect.EnableDefaultLighting(skydome, true);
 
             alphaBlend = BlendState.New(GraphicsDevice, SharpDX.Direct3D11.BlendOption.SourceAlpha,         //sourceBlend
                                                   SharpDX.Direct3D11.BlendOption.InverseSourceAlpha,         //destinationBlend
@@ -85,6 +99,10 @@ namespace ProtoCar
 
             var blendStateDesc = SharpDX.Direct3D11.BlendStateDescription.Default();
             opaqueBlend = BlendState.New(GraphicsDevice, "Opaque", blendStateDesc);
+
+
+            handleNewGameState();
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -96,79 +114,48 @@ namespace ProtoCar
             if (keyboardState.IsKeyDown(Keys.Escape))
                 Exit();
 
-            if (keyboardState.IsKeyDown(Keys.D1))
-                index = 0;
+            currentState = gameState.update(gameTime);
 
-            else if (keyboardState.IsKeyDown(Keys.D2))
-                index = 1;
-
-
-            player1.update(gameTime, index == 0);
-            player2.update(gameTime, index == 1);
-            foreach (Item item in items)
-                item.update(gameTime);
-
+            if (currentState != prevState)
+                handleNewGameState();
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-            GraphicsDevice.SetRasterizerState(GraphicsDevice.RasterizerStates.CullNone);
-            GraphicsDevice.SetBlendState(opaqueBlend);
 
-            //plane stuff
-            BasicEffect bEffect = new BasicEffect(GraphicsDevice);
-
-            bEffect.EnableDefaultLighting();
-            bEffect.TextureEnabled = true;
-            bEffect.Texture = stoneTexture;
-
-            //view for player1
-            GraphicsDevice.SetViewport(new ViewportF(0, 0, width/2, height));
-
-            bEffect.View = player1.bEffect.View;
-            bEffect.Projection = player1.bEffect.Projection;
-
-            bEffect.World = Matrix.RotationX((float)Math.PI / 2);
-            primitive.Draw(bEffect);
-
-            bEffect.World = player2.world;
-            player2.primitive.Draw(bEffect);
-           
-
- 
-
-            //view for player 2
-            GraphicsDevice.SetViewport(new ViewportF(width/2, 0, width/2, height));
-            GraphicsDevice.SetBlendState(opaqueBlend);
-
-            bEffect.View = player2.bEffect.View;
-            bEffect.Projection = player2.bEffect.Projection;
-
-            bEffect.World = Matrix.RotationX((float)Math.PI / 2);
-            primitive.Draw(bEffect); 
-
-            bEffect.World = player1.world;
-            player1.primitive.Draw(bEffect);
-
-            foreach (Item item in items)
-                item.draw(gameTime);
-
-
-            //I had trouble drawing 3d stuff when 2d and 3d graphics are mixes, so draw 2d after all 3d stuff:
-            GraphicsDevice.SetViewport(new ViewportF(0, 0, width, height));
-
-            spriteBatch.Begin(SpriteSortMode.Deferred, alphaBlend, null, null, null, null);
-            spriteBatch.Draw(hud, new Vector2(0, 500), Color.White);
-            spriteBatch.Draw(hud, new Vector2(width/2, 500), Color.White);
-            spriteBatch.End();
-
-
-      
+            gameState.draw(gameTime);
 
             base.Draw(gameTime);
         }
+
+        private void handleNewGameState()
+        {
+            //gameState.unloadContent();
+
+            switch (currentState)
+            {
+                case EGameState.InGame:
+                    gameState = new InGame();
+                    break;
+
+                case EGameState.Sandbox:
+                    gameState = new Sandbox();
+                    break;
+
+                default:
+                    Exit();
+                    break;
+            }
+            
+            gameState.init();
+            gameState.loadContent(Content);
+
+            prevState = currentState;
+        }
+
+
+
     }
 }

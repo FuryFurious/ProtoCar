@@ -26,6 +26,8 @@ namespace ProtoCar
             this.controler = controler;
             this.cam = new Camera(Game1.gManager.GraphicsDevice, new Vector3(0, 0, 0));
 
+
+
             this.bEffect = new BasicEffect(Game1.gManager.GraphicsDevice);
             bEffect.SpecularColor = new Vector3(0, 0, 0);
             bEffect.EnableDefaultLighting();
@@ -53,8 +55,6 @@ namespace ProtoCar
                 cam.update();
             else
                 cam.updateMatrices();
-        
-
         
           //  cam.updateMatrices();
             world = Matrix.RotationYawPitchRoll(cam.rotation.Y, cam.rotation.X, 0) * Matrix.Translation(cam.position);
