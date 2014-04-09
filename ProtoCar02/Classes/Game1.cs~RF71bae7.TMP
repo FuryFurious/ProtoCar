@@ -80,8 +80,8 @@ namespace ProtoCar
                                                   SharpDX.Direct3D11.BlendOption.SourceAlpha,    //source alphaBlend
                                                   SharpDX.Direct3D11.BlendOption.InverseSourceAlpha,         //destination alpha blend
                                                   SharpDX.Direct3D11.BlendOperation.Add,              //alphablend operation
-                                                  SharpDX.Direct3D11.ColorWriteMaskFlags.All, -1       //rendertarget mask
-                                                  );
+                                                  SharpDX.Direct3D11.ColorWriteMaskFlags.All,       //rendertarget mask
+                                                  -1);
 
             var blendStateDesc = SharpDX.Direct3D11.BlendStateDescription.Default();
             opaqueBlend = BlendState.New(GraphicsDevice, "Opaque", blendStateDesc);
@@ -116,7 +116,6 @@ namespace ProtoCar
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             GraphicsDevice.SetRasterizerState(GraphicsDevice.RasterizerStates.CullNone);
-            GraphicsDevice.SetBlendState(opaqueBlend);
 
             //plane stuff
             BasicEffect bEffect = new BasicEffect(GraphicsDevice);
@@ -127,6 +126,7 @@ namespace ProtoCar
 
             //view for player1
             GraphicsDevice.SetViewport(new ViewportF(0, 0, width/2, height));
+            GraphicsDevice.SetBlendState(opaqueBlend);
 
             bEffect.View = player1.bEffect.View;
             bEffect.Projection = player1.bEffect.Projection;
@@ -137,7 +137,9 @@ namespace ProtoCar
             bEffect.World = player2.world;
             player2.primitive.Draw(bEffect);
            
-
+            spriteBatch.Begin(SpriteSortMode.Deferred, alphaBlend, null, null, null, null);
+            spriteBatch.Draw(hud, new Vector2(0, 500), Color.White);
+            spriteBatch.End();
  
 
             //view for player 2
@@ -153,18 +155,13 @@ namespace ProtoCar
             bEffect.World = player1.world;
             player1.primitive.Draw(bEffect);
 
-            foreach (Item item in items)
-                item.draw(gameTime);
-
-
-            //I had trouble drawing 3d stuff when 2d and 3d graphics are mixes, so draw 2d after all 3d stuff:
-            GraphicsDevice.SetViewport(new ViewportF(0, 0, width, height));
-
+           // foreach (Item item in items)
+           //     item.draw(gameTime);
+            
             spriteBatch.Begin(SpriteSortMode.Deferred, alphaBlend, null, null, null, null);
             spriteBatch.Draw(hud, new Vector2(0, 500), Color.White);
-            spriteBatch.Draw(hud, new Vector2(width/2, 500), Color.White);
             spriteBatch.End();
-
+            
 
       
 

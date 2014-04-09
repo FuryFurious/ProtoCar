@@ -38,7 +38,6 @@ namespace ProtoCar
         int index = 0;
 
         BlendState alphaBlend;
-        BlendState opaqueBlend;
 
         public Game1()
         {
@@ -50,6 +49,16 @@ namespace ProtoCar
 
             gManager.PreferredBackBufferWidth = width;
             gManager.PreferredBackBufferHeight = height;
+
+            alphaBlend = BlendState.New(GraphicsDevice, SharpDX.Direct3D11.BlendOption.SourceAlpha,         //sourceBlend
+                                                              SharpDX.Direct3D11.BlendOption.InverseSourceAlpha,         //destinationBlend
+                                                              SharpDX.Direct3D11.BlendOperation.Add,              //blendoperation
+                                                              SharpDX.Direct3D11.BlendOption.SourceAlpha,    //source alphaBlend
+                                                              SharpDX.Direct3D11.BlendOption.InverseSourceAlpha,         //destination alpha blend
+                                                              SharpDX.Direct3D11.BlendOperation.Add,              //alphablend operation
+                                                              SharpDX.Direct3D11.ColorWriteMaskFlags.All,       //rendertarget mask
+                                                              -1);  
+
         }
 
         protected override void Initialize()
@@ -73,18 +82,6 @@ namespace ProtoCar
 
             stoneTexture = Content.Load<Texture2D>("Stone");
             hud = Content.Load<Texture2D>("hud");
-
-            alphaBlend = BlendState.New(GraphicsDevice, SharpDX.Direct3D11.BlendOption.SourceAlpha,         //sourceBlend
-                                                  SharpDX.Direct3D11.BlendOption.InverseSourceAlpha,         //destinationBlend
-                                                  SharpDX.Direct3D11.BlendOperation.Add,              //blendoperation
-                                                  SharpDX.Direct3D11.BlendOption.SourceAlpha,    //source alphaBlend
-                                                  SharpDX.Direct3D11.BlendOption.InverseSourceAlpha,         //destination alpha blend
-                                                  SharpDX.Direct3D11.BlendOperation.Add,              //alphablend operation
-                                                  SharpDX.Direct3D11.ColorWriteMaskFlags.All, -1       //rendertarget mask
-                                                  );
-
-            var blendStateDesc = SharpDX.Direct3D11.BlendStateDescription.Default();
-            opaqueBlend = BlendState.New(GraphicsDevice, "Opaque", blendStateDesc);
         }
 
         protected override void Update(GameTime gameTime)
@@ -116,7 +113,6 @@ namespace ProtoCar
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             GraphicsDevice.SetRasterizerState(GraphicsDevice.RasterizerStates.CullNone);
-            GraphicsDevice.SetBlendState(opaqueBlend);
 
             //plane stuff
             BasicEffect bEffect = new BasicEffect(GraphicsDevice);
@@ -136,13 +132,14 @@ namespace ProtoCar
 
             bEffect.World = player2.world;
             player2.primitive.Draw(bEffect);
-           
 
+            spriteBatch.Begin();
+            spriteBatch.Draw(hud, new Vector2(0, 500), Color.White);
+            spriteBatch.End();
  
 
             //view for player 2
             GraphicsDevice.SetViewport(new ViewportF(width/2, 0, width/2, height));
-            GraphicsDevice.SetBlendState(opaqueBlend);
 
             bEffect.View = player2.bEffect.View;
             bEffect.Projection = player2.bEffect.Projection;
@@ -153,16 +150,11 @@ namespace ProtoCar
             bEffect.World = player1.world;
             player1.primitive.Draw(bEffect);
 
-            foreach (Item item in items)
-                item.draw(gameTime);
+           // foreach (Item item in items)
+           //     item.draw(gameTime);
 
-
-            //I had trouble drawing 3d stuff when 2d and 3d graphics are mixes, so draw 2d after all 3d stuff:
-            GraphicsDevice.SetViewport(new ViewportF(0, 0, width, height));
-
-            spriteBatch.Begin(SpriteSortMode.Deferred, alphaBlend, null, null, null, null);
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null);
             spriteBatch.Draw(hud, new Vector2(0, 500), Color.White);
-            spriteBatch.Draw(hud, new Vector2(width/2, 500), Color.White);
             spriteBatch.End();
 
 
