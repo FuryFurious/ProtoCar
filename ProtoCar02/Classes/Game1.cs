@@ -2,7 +2,6 @@
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Graphics;
 using SharpDX.Toolkit.Input;
-using SharpDX.XInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,8 +67,8 @@ namespace ProtoCar
             base.LoadContent();
       
 
-            stoneTexture = Content.Load<Texture2D>("Stone.png");
-            hud = Content.Load<Texture2D>("hud.png");
+            stoneTexture = Content.Load<Texture2D>("Stone");
+            hud = Content.Load<Texture2D>("hud");
         }
 
         protected override void Update(GameTime gameTime)
@@ -138,10 +137,10 @@ namespace ProtoCar
             bEffect.World = player1.world;
             player1.primitive.Draw(bEffect);
 
-            foreach (Item item in items)
-                item.draw(gameTime);
+           // foreach (Item item in items)
+           //     item.draw(gameTime);
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null);
             spriteBatch.Draw(hud, new Vector2(0, 500), Color.White);
             spriteBatch.End();
 
