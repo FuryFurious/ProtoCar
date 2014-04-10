@@ -19,11 +19,6 @@ namespace ProtoCar
         public Matrix projection;
         public Matrix viewProjection;
 
-        private float rotationSpeed = 0.75f;
-
-        private float oldMouseX;
-        private float oldMouseY;
-
         public Camera(GraphicsDevice device, Vector3 position)
         {
             this.position = position;
@@ -38,25 +33,6 @@ namespace ProtoCar
         }
 
 
-        public void update()
-        {
-
-            rotation.X = MathUtil.Clamp(rotation.X, -1.5f, 1.5f);
-
-            Vector2 mousePos = new Vector2(Game1.mouseState.X, Game1.mouseState.Y);
-
-            float dx = mousePos.X - oldMouseX;
-            rotation.Y -= rotationSpeed * dx;
-
-            float dy = mousePos.Y - oldMouseY;
-            rotation.X -= rotationSpeed * dy;
-
-            if(Game1.active)
-                resetMouse();
-
-            updateMatrices();
-        }
-
         public void updateMatrices()
         {
  
@@ -70,14 +46,6 @@ namespace ProtoCar
             view = Matrix.LookAtRH(position, lookAt, Vector3.Up);
 
             viewProjection = view * projection;
-        }
-
-        private void resetMouse()
-        {
-            Game1.mouseManager.SetPosition(new Vector2(0.5f));
-
-            oldMouseX = 0.5f;
-            oldMouseY = 0.5f;
         }
 
         public void move(Vector3 deltaPos)

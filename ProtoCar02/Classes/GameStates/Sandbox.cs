@@ -3,6 +3,7 @@ using SharpDX.Toolkit;
 using SharpDX.Toolkit.Content;
 using SharpDX.Toolkit.Graphics;
 using SharpDX.Toolkit.Input;
+using SharpDX.XInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,16 +21,18 @@ namespace ProtoCar
         Player player1;
         Player player2;
         List<Item> items;
+
         //plane
-        GeometricPrimitive primitive;
+        GeometricPrimitive groundPlane;
 
-        int index = 0;
 
+        //for 3d boundingBox intersections testing:
         BoundingBox b1 = new BoundingBox(new Vector3(0, 0, 0), new Vector3(1, 1, 1));
         BoundingBox b2 = new BoundingBox(new Vector3(0.5f, 0.5f, 0.5f), new Vector3(1, 1, 1));
 
-        string text = "";
+        BasicEffect bEffect = new BasicEffect(Game1.gManager.GraphicsDevice);
 
+        string text = "";
 
         public Sandbox()
         {
@@ -38,11 +41,18 @@ namespace ProtoCar
 
         public void init()
         {
-            player1 = new Player(new PlayerWASD());
+            bEffect.EnableDefaultLighting();
+            bEffect.TextureEnabled = true;
+            bEffect.Texture = Game1.stoneTextureBig;
+            bEffect.SpecularPower = 10000.0f;
+
+            player1 = new Player(new PlayerGamepad(SharpDX.XInput.UserIndex.One));
             player2 = new Player(new PlayerArrow());
+
+
             items = new List<Item>() { new Item(new Vector3(0, 0, 10)) };
 
-            primitive = GeometricPrimitive.Plane.New(Game1.gManager.GraphicsDevice, 1000.0f, 1000.0f, 1, false);
+            groundPlane = GeometricPrimitive.Plane.New(Game1.gManager.GraphicsDevice, 1000.0f, 1000.0f, 1, false);
         }
 
         void IGameState.loadContent(ContentManager Content)
@@ -60,20 +70,13 @@ namespace ProtoCar
 
         public EGameState update(GameTime gameTime)
         {
-
-            if (Game1.keyboardState.IsKeyDown(Keys.D1))
-                index = 0;
-
-            else if (Game1.keyboardState.IsKeyDown(Keys.D2))
-                index = 1;
+            player1.update(gameTime);
+            player2.update(gameTime);
 
 
-            player1.update(gameTime, index == 0);
-            player2.update(gameTime, index == 1);
-
+            //updating the boundinbBoxes:
             b1.Minimum = player1.cam.position;
             b2.Minimum = player2.cam.position;
-
             b1.Maximum = player1.cam.position + new Vector3(1, 1, 1);
             b2.Maximum = player2.cam.position + new Vector3(1, 1, 1);
 
@@ -85,9 +88,6 @@ namespace ProtoCar
             else
                 text = "";
 
-            Console.WriteLine("Help");
-
-
             return EGameState.Sandbox;
         }
 
@@ -95,15 +95,9 @@ namespace ProtoCar
         {
             Game1.gManager.GraphicsDevice.Clear(Color.CornflowerBlue);
             Game1.gManager.GraphicsDevice.SetRasterizerState(Game1.gManager.GraphicsDevice.RasterizerStates.CullNone);
-       //     Game1.gManager.GraphicsDevice.SetBlendState(null);
 
-            //plane stuff
-            BasicEffect bEffect = new BasicEffect(Game1.gManager.GraphicsDevice);
-
-            bEffect.EnableDefaultLighting();
-            bEffect.TextureEnabled = true;
-            bEffect.Texture = Game1.stoneTexture;
-            bEffect.SpecularPower = 10000.0f;
+            //TODO organize the draw calls for cleaner code:
+   
 
             //view for player1
             Game1.gManager.GraphicsDevice.SetViewport(new ViewportF(0, 0, Game1.width / 2, Game1.height));
@@ -112,7 +106,7 @@ namespace ProtoCar
             bEffect.Projection = player1.bEffect.Projection;
 
             bEffect.World = Matrix.RotationX((float)Math.PI / 2);
-            primitive.Draw(bEffect);
+            groundPlane.Draw(bEffect);
 
             bEffect.World = player2.world;
             player2.primitive.Draw(bEffect);
@@ -130,7 +124,7 @@ namespace ProtoCar
             bEffect.Projection = player2.bEffect.Projection;
 
             bEffect.World = Matrix.RotationX((float)Math.PI / 2);
-            primitive.Draw(bEffect);
+            groundPlane.Draw(bEffect);
 
             bEffect.World = player1.world;
             player1.primitive.Draw(bEffect);

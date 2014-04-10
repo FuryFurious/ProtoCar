@@ -33,6 +33,7 @@ namespace ProtoCar
 
         public static Texture2D stoneTexture;
         public static Texture2D hud;
+        public static Texture2D stoneTextureBig;
         public static SpriteFont font;
 
         public static Model skydome;
@@ -85,17 +86,19 @@ namespace ProtoCar
             stoneTexture = Content.Load<Texture2D>("Stone");
             hud = Content.Load<Texture2D>("hud");
             skydome = Content.Load<Model>("skydome");
+            stoneTextureBig = Content.Load<Texture2D>("StoneFloorBig");
 
           //  BasicEffect.EnableDefaultLighting(skydome, true);
 
-            alphaBlend = BlendState.New(GraphicsDevice, SharpDX.Direct3D11.BlendOption.SourceAlpha,         //sourceBlend
-                                                  SharpDX.Direct3D11.BlendOption.InverseSourceAlpha,         //destinationBlend
-                                                  SharpDX.Direct3D11.BlendOperation.Add,              //blendoperation
-                                                  SharpDX.Direct3D11.BlendOption.SourceAlpha,    //source alphaBlend
-                                                  SharpDX.Direct3D11.BlendOption.InverseSourceAlpha,         //destination alpha blend
-                                                  SharpDX.Direct3D11.BlendOperation.Add,              //alphablend operation
-                                                  SharpDX.Direct3D11.ColorWriteMaskFlags.All, -1       //rendertarget mask
-                                                  );
+            alphaBlend = BlendState.New(GraphicsDevice, 
+                                                SharpDX.Direct3D11.BlendOption.SourceAlpha,         //sourceBlend
+                                                SharpDX.Direct3D11.BlendOption.InverseSourceAlpha,         //destinationBlend
+                                                SharpDX.Direct3D11.BlendOperation.Add,              //blendoperation
+                                                SharpDX.Direct3D11.BlendOption.SourceAlpha,    //source alphaBlend
+                                                SharpDX.Direct3D11.BlendOption.InverseSourceAlpha,         //destination alpha blend
+                                                SharpDX.Direct3D11.BlendOperation.Add,              //alphablend operation
+                                                SharpDX.Direct3D11.ColorWriteMaskFlags.All,  //which píxel affected
+                                                -1);
 
             var blendStateDesc = SharpDX.Direct3D11.BlendStateDescription.Default();
             opaqueBlend = BlendState.New(GraphicsDevice, "Opaque", blendStateDesc);

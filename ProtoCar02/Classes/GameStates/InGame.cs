@@ -1,5 +1,6 @@
 ﻿using SharpDX.Toolkit;
 using SharpDX.Toolkit.Content;
+using SharpDX.XInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace ProtoCar
 
         public InGame()
         {
-
+          
         }
 
         public void init()

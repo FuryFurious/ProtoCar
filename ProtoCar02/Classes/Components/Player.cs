@@ -16,11 +16,11 @@ namespace ProtoCar
         public Camera cam;
         public BasicEffect bEffect;
 
-        PlayerControler controler;
+        PlayerController controler;
 
         float speed = 0.1f;
 
-        public Player(PlayerControler controler)
+        public Player(PlayerController controler)
         {
             this.primitive = GeometricPrimitive.Teapot.New(Game1.gManager.GraphicsDevice, 1.0f, 8, false);
             this.controler = controler;
@@ -36,27 +36,23 @@ namespace ProtoCar
             
         }
 
-        public void update(GameTime gameTime, bool useMouse)
+        public void update(GameTime gameTime)
         {
-            if(controler.moveLeft())
-                cam.move(-Vector3.UnitX * speed);
+            controler.update();
 
-            else if(controler.moveRight())
-                cam.move(Vector3.UnitX * speed);
+            Vector3 direction = controler.getMoveDirection();
 
-            if (controler.moveUp())
-                cam.move(-Vector3.UnitZ * speed);
-
-            else if (controler.moveDown())
-                cam.move(Vector3.UnitZ * speed);
+            if(direction.LengthSquared() > 0)
+                cam.move(direction * speed);
 
 
-            if (useMouse)
-                cam.update();
-            else
-                cam.updateMatrices();
+       
+            cam.rotation = controler.rotate();
+
+
+
+            cam.updateMatrices();
         
-          //  cam.updateMatrices();
             world = Matrix.RotationYawPitchRoll(cam.rotation.Y, cam.rotation.X, 0) * Matrix.Translation(cam.position);
 
             bEffect.World = world;
