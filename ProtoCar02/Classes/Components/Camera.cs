@@ -27,9 +27,9 @@ namespace ProtoCar
 
             projection = Matrix.PerspectiveFovRH(
               0.6f,                                                             // Field of view
-              (float)device.BackBuffer.Width / device.BackBuffer.Height,        // Aspect ratio
-              0.5f,                                                             // Near clipping plane
-              500.0f); 
+              (float)device.BackBuffer.Width / (Settings.enablePlayer2 ? (device.BackBuffer.Height/2) : device.BackBuffer.Height),        // Aspect ratio //only height/2 because our Viewport is just height / 2
+              0.1f,                                                             // Near clipping plane
+              500.0f);
         }
 
 
@@ -37,7 +37,6 @@ namespace ProtoCar
         {
  
             Matrix rotationMatrix = Matrix.RotationX(rotation.X) * Matrix.RotationY(rotation.Y);
-
             direction = Helper.Transform(-Vector3.UnitZ, ref rotationMatrix);
             direction.Normalize();
 
@@ -50,7 +49,14 @@ namespace ProtoCar
 
         public void move(Vector3 deltaPos)
         {
-            Matrix matrix = Matrix.RotationYawPitchRoll(rotation.Y, rotation.X, 0);
+            Matrix matrix;
+
+            if(Settings.enableNoclip)
+                matrix = Matrix.RotationYawPitchRoll(rotation.Y, rotation.X, 0);
+
+            else
+                matrix = Matrix.RotationY(rotation.Y);
+
             position += Helper.Transform(deltaPos, ref matrix);
         }
 

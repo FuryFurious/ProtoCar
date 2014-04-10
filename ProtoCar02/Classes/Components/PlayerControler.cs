@@ -16,11 +16,10 @@ namespace ProtoCar
         Vector3 rotate();
     }
 
+    //Merge PlayerWASD / PlayerArrow (too much copied code, too lazy to do this now)
     class PlayerWASD : PlayerController
     {
         Vector3 rotation = new Vector3(0, 0, 0);
-
-        private float rotationSpeed = 0.75f;
 
         private float oldMouseX;
         private float oldMouseY;
@@ -52,10 +51,10 @@ namespace ProtoCar
             Vector2 mousePos = new Vector2(Game1.mouseState.X, Game1.mouseState.Y);
 
             float dx = mousePos.X - oldMouseX;
-            rotation.Y -= rotationSpeed * dx;
+            rotation.Y -= Settings.mouseSpeed * dx;
 
             float dy = mousePos.Y - oldMouseY;
-            rotation.X -= rotationSpeed * dy;
+            rotation.X -= Settings.mouseSpeed * dy;
 
             if (Game1.active)
                 resetMouse();
@@ -81,8 +80,6 @@ namespace ProtoCar
     {
 
         Vector3 rotation = new Vector3(0, 0, 0);
-
-        private float rotationSpeed = 0.75f;
 
         private float oldMouseX;
         private float oldMouseY;
@@ -115,10 +112,10 @@ namespace ProtoCar
             Vector2 mousePos = new Vector2(Game1.mouseState.X, Game1.mouseState.Y);
 
             float dx = mousePos.X - oldMouseX;
-            rotation.Y -= rotationSpeed * dx;
+            rotation.Y -= Settings.mouseSpeed * dx;
 
             float dy = mousePos.Y - oldMouseY;
-            rotation.X -= rotationSpeed * dy;
+            rotation.X -= Settings.mouseSpeed * dy;
 
             if (Game1.active)
                 resetMouse();
@@ -142,11 +139,9 @@ namespace ProtoCar
 
     class PlayerGamepad : PlayerController
     {
-
         CustomGamepad gamepad;
-        Vector3 rotation = new Vector3(0, 0, 0);
 
-        Vector3 rotationSpeed = new Vector3(0.03f, 0.05f, 0);
+        Vector3 rotation = new Vector3(0, 0, 0);
 
         public PlayerGamepad(SharpDX.XInput.UserIndex index)
         {
@@ -168,13 +163,14 @@ namespace ProtoCar
             Vector2 rotation = gamepad.rightPad();
 
             //y-deadzone when using x axis
-            rotation.Y = (1 - (Math.Abs(rotation.X) * 0.75f)) * rotation.Y;
+            rotation.Y = (1 - (Math.Abs(rotation.X) * Settings.gamePadYawDeadZone)) * rotation.Y;
 
 
-            this.rotation += new Vector3(rotation.Y, -rotation.X, 0) * rotationSpeed;
+            this.rotation += new Vector3(rotation.Y, -rotation.X, 0) * Settings.gamePadSpeed;
 
             return this.rotation;
         }
+
 
         public void update()
         {

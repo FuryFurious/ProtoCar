@@ -16,8 +16,6 @@ namespace ProtoCar
         public BasicEffect bEffect;
         public Camera cam;
 
-        float speed = 0.1f;
-
         public Item(Vector3 position)
         {
             this.primitive = GeometricPrimitive.Teapot.New(Game1.gManager.GraphicsDevice, 1.0f, 8, false);

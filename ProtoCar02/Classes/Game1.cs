@@ -23,9 +23,6 @@ namespace ProtoCar
         public static MouseManager mouseManager;
         public static MouseState mouseState;
 
-        public static int width = 800;
-        public static int height = 600;
-
         public static BlendState alphaBlend;
         public static BlendState opaqueBlend;
 
@@ -34,6 +31,8 @@ namespace ProtoCar
         public static Texture2D stoneTexture;
         public static Texture2D hud;
         public static Texture2D stoneTextureBig;
+        public static Texture2D blueTexture;
+
         public static SpriteFont font;
 
         public static Model skydome;
@@ -52,8 +51,11 @@ namespace ProtoCar
 
             Content.RootDirectory = "Content";
 
-            gManager.PreferredBackBufferWidth = width;
-            gManager.PreferredBackBufferHeight = height;
+            gManager.PreferredBackBufferWidth = Settings.windowWidth; 
+            gManager.PreferredBackBufferHeight = Settings.windowHeight;
+
+            //CARE: when fullscreened the mouse starts to bug out: (wrong reset-coordinates?)
+            //gManager.IsFullScreen = true;
 
         }
 
@@ -70,10 +72,14 @@ namespace ProtoCar
         protected override void Initialize()
         {
             Window.Title = "ProtoCar";
+
+            //to keep track if the window has focus or not (e.g. for not reseting the mouse pos)
             Window.Deactivated += lostFocus;
             Window.Activated += gainedFocus;
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+        //    gManager.PreferMultiSampling = true;
 
             base.Initialize();
         }
@@ -83,10 +89,11 @@ namespace ProtoCar
             base.LoadContent();
 
             font = Content.Load<SpriteFont>("Arial16");
-            stoneTexture = Content.Load<Texture2D>("Stone");
+            stoneTexture = Content.Load<Texture2D>("redThing");
             hud = Content.Load<Texture2D>("hud");
             skydome = Content.Load<Model>("skydome");
             stoneTextureBig = Content.Load<Texture2D>("StoneFloorBig");
+            blueTexture = Content.Load<Texture2D>("blueTexture");
 
           //  BasicEffect.EnableDefaultLighting(skydome, true);
 
@@ -102,6 +109,7 @@ namespace ProtoCar
 
             var blendStateDesc = SharpDX.Direct3D11.BlendStateDescription.Default();
             opaqueBlend = BlendState.New(GraphicsDevice, "Opaque", blendStateDesc);
+
 
 
             handleNewGameState();
@@ -153,7 +161,7 @@ namespace ProtoCar
             }
             
             gameState.init();
-            gameState.loadContent(Content);
+          //  gameState.loadContent(Content);
 
             prevState = currentState;
         }

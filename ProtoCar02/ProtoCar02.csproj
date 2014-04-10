@@ -49,24 +49,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Components\APickUp.cs" />
     <Compile Include="Classes\Components\Camera.cs" />
     <Compile Include="Classes\Components\CustomGamepad.cs" />
+    <Compile Include="Classes\Components\PointPickUp.cs" />
     <Compile Include="Classes\Game1.cs" />
     <Compile Include="Classes\GameStates\InGame.cs" />
     <Compile Include="Classes\GameStates\Sandbox.cs" />
     <Compile Include="Classes\Helper.cs" />
-    <Compile Include="Classes\IGameState.cs" />
+    <Compile Include="Classes\Components\IGameState.cs" />
     <Compile Include="Classes\Components\Item.cs" />
     <Compile Include="Classes\Components\Player.cs" />
     <Compile Include="Classes\Components\PlayerControler.cs" />
+    <Compile Include="Classes\Settings.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ToolkitTexture Include="Content\hud.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </ToolkitTexture>
-    <ToolkitTexture Include="Content\Stone.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </ToolkitTexture>
   </ItemGroup>
@@ -85,6 +85,16 @@
   </ItemGroup>
   <ItemGroup>
     <ToolkitTexture Include="Content\StoneFloorBig.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </ToolkitTexture>
+  </ItemGroup>
+  <ItemGroup>
+    <ToolkitTexture Include="Content\redThing.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </ToolkitTexture>
+  </ItemGroup>
+  <ItemGroup>
+    <ToolkitTexture Include="Content\blueTexture.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </ToolkitTexture>
   </ItemGroup>

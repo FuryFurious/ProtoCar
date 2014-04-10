@@ -12,8 +12,6 @@ namespace ProtoCar
     interface IGameState
     {
         void init();
-        void loadContent(SharpDX.Toolkit.Content.ContentManager content);
-        void unloadContent();
         EGameState update(GameTime gameTime);
         void draw(GameTime gameTime);
     }

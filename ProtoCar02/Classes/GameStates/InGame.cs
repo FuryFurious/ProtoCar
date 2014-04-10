@@ -25,16 +25,6 @@ namespace ProtoCar
           
         }
 
-        public void loadContent(ContentManager content)
-        {
-            
-        }
-
-        public void unloadContent()
-        {
-            
-        }
-
         public EGameState update(GameTime gameTime)
         {
             return EGameState.InGame;

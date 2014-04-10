@@ -16,24 +16,23 @@ namespace ProtoCar
         public Camera cam;
         public BasicEffect bEffect;
 
+        public int points = 0;
+
         PlayerController controler;
 
-        float speed = 0.1f;
+        float speed = Settings.playerSpeed;
 
         public Player(PlayerController controler)
         {
             this.primitive = GeometricPrimitive.Teapot.New(Game1.gManager.GraphicsDevice, 1.0f, 8, false);
             this.controler = controler;
-            this.cam = new Camera(Game1.gManager.GraphicsDevice, new Vector3(0, 0, 0));
-
-
+            this.cam = new Camera(Game1.gManager.GraphicsDevice, new Vector3(0, 1.0f, 0));
 
             this.bEffect = new BasicEffect(Game1.gManager.GraphicsDevice);
             bEffect.SpecularColor = new Vector3(0, 0, 0);
             bEffect.EnableDefaultLighting();
             bEffect.Texture = Game1.stoneTexture;
             bEffect.TextureEnabled = true;
-            
         }
 
         public void update(GameTime gameTime)
@@ -42,14 +41,11 @@ namespace ProtoCar
 
             Vector3 direction = controler.getMoveDirection();
 
+            //only call cam.move if there is any actual movement:
             if(direction.LengthSquared() > 0)
                 cam.move(direction * speed);
 
-
-       
             cam.rotation = controler.rotate();
-
-
 
             cam.updateMatrices();
         
@@ -60,9 +56,5 @@ namespace ProtoCar
             bEffect.Projection = cam.projection;
         }
 
-        public void draw(GameTime gameTime)
-        {
-            primitive.Draw(bEffect);
-        }
     }
 }
