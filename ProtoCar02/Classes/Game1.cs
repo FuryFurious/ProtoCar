@@ -1,5 +1,6 @@
 ﻿using SharpDX;
 using SharpDX.Toolkit;
+using SharpDX.Toolkit.Audio;
 using SharpDX.Toolkit.Graphics;
 using SharpDX.Toolkit.Input;
 using System;
@@ -32,7 +33,7 @@ namespace ProtoCar
         public static Texture2D hud;
         public static Texture2D stoneTextureBig;
         public static Texture2D blueTexture;
-
+        
         public static SpriteFont font;
 
         public static Model skydome;
@@ -55,7 +56,7 @@ namespace ProtoCar
             gManager.PreferredBackBufferHeight = Settings.windowHeight;
 
             //CARE: when fullscreened the mouse starts to bug out: (wrong reset-coordinates?)
-            //gManager.IsFullScreen = true;
+            gManager.IsFullScreen = Settings.enableFullscreen;
 
         }
 
@@ -79,8 +80,6 @@ namespace ProtoCar
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-        //    gManager.PreferMultiSampling = true;
-
             base.Initialize();
         }
 
@@ -94,8 +93,6 @@ namespace ProtoCar
             skydome = Content.Load<Model>("skydome");
             stoneTextureBig = Content.Load<Texture2D>("StoneFloorBig");
             blueTexture = Content.Load<Texture2D>("blueTexture");
-
-          //  BasicEffect.EnableDefaultLighting(skydome, true);
 
             alphaBlend = BlendState.New(GraphicsDevice, 
                                                 SharpDX.Direct3D11.BlendOption.SourceAlpha,         //sourceBlend

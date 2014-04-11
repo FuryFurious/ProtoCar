@@ -61,8 +61,8 @@ namespace ProtoCar
             //makes the specularPower more dull:
             bEffect.SpecularPower = 100.0f;
 
-            player1 = new Player(new PlayerGamepad(SharpDX.XInput.UserIndex.One));
-            player2 = new Player(new PlayerWASD());
+            player1 = new Player(Settings.controller1);
+            player2 = new Player(Settings.controller2);
 
 
             items = new List<Item>();// { new Item(new Vector3(0, 0, 10)) };
@@ -79,7 +79,7 @@ namespace ProtoCar
                 float x = ((float)random.NextDouble() - 0.5f) * 2.0f * Settings.respawnDistance;
                 float z = ((float)random.NextDouble() - 0.5f) * 2.0f * Settings.respawnDistance;
 
-                pickups.Add(new PointPickUp(new Vector3(x,1,z), 10.0f));
+                pickups.Add(new PointPickUp(new Vector3(x,1,z)));
 
                 respawnCount = Settings.respawnInterval;
             }

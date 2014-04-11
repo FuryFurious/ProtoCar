@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace ProtoCar
 {
 
-    interface PlayerController
+    public interface PlayerController
     {
         void update();
         Vector3 getMoveDirection();
@@ -17,7 +17,7 @@ namespace ProtoCar
     }
 
     //Merge PlayerWASD / PlayerArrow (too much copied code, too lazy to do this now)
-    class PlayerWASD : PlayerController
+    public class PlayerWASD : PlayerController
     {
         Vector3 rotation = new Vector3(0, 0, 0);
 
@@ -76,7 +76,7 @@ namespace ProtoCar
         }
     }
 
-    class PlayerArrow : PlayerController
+    public class PlayerArrow : PlayerController
     {
 
         Vector3 rotation = new Vector3(0, 0, 0);
@@ -137,7 +137,7 @@ namespace ProtoCar
         }
     }
 
-    class PlayerGamepad : PlayerController
+    public class PlayerGamepad : PlayerController
     {
         CustomGamepad gamepad;
 
