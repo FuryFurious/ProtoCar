@@ -1,6 +1,5 @@
 ﻿using SharpDX;
 using SharpDX.Toolkit;
-using SharpDX.Toolkit.Audio;
 using SharpDX.Toolkit.Graphics;
 using SharpDX.Toolkit.Input;
 using System;

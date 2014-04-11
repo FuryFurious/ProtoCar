@@ -189,13 +189,16 @@ namespace ProtoCar
                 //I had trouble drawing 3d stuff when 2d and 3d graphics are mixed, so draw 2d after all 3d stuff:
                 Game1.gManager.GraphicsDevice.SetViewport(viewport0);
 
+                Vector2 len1 = Game1.font.MeasureString(player1.points + "");
+                Vector2 len2 = Game1.font.MeasureString(player2.points + "");
+
                 Game1.spriteBatch.Begin(SpriteSortMode.Deferred, Game1.alphaBlend, null, null, null, null);
 
                 Game1.spriteBatch.Draw(Game1.hud, new Vector2(0, viewport1.Bounds.Bottom - 100), Color.White);
-                Game1.spriteBatch.DrawString(Game1.font, "" + player1.points, new Vector2(5, viewport1.Bounds.Bottom - 60), Color.Black);
+                Game1.spriteBatch.DrawString(Game1.font, "" + player1.points, new Vector2((100 - len1.X) / 2, viewport1.Bounds.Bottom - 60), Color.Black);
 
-                Game1.spriteBatch.Draw(Game1.hud, new Vector2(0, viewport2.Bounds.Bottom - 200), Color.White);
-                Game1.spriteBatch.DrawString(Game1.font, "" + player2.points, new Vector2(5, viewport2.Bounds.Bottom - 160), Color.Black);
+                Game1.spriteBatch.Draw(Game1.hud, new Vector2(0, viewport2.Bounds.Bottom - 100), Color.White);
+                Game1.spriteBatch.DrawString(Game1.font, "" + player2.points, new Vector2((100 - len2.X) / 2, viewport2.Bounds.Bottom - 60), Color.Black);
 
                 Game1.spriteBatch.DrawString(Game1.font, "" + 1.0f / (float)gameTime.ElapsedGameTime.TotalSeconds, Vector2.Zero, Color.Black);
 

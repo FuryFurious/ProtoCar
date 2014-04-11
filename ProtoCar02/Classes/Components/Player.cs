@@ -20,7 +20,7 @@ namespace ProtoCar
 
         PlayerController controler;
 
-        float speed = Settings.playerSpeed;
+        Vector3 direction;
 
         public double drawEffectDuration = 0;
 
@@ -46,8 +46,17 @@ namespace ProtoCar
             Vector3 direction = controler.getMoveDirection();
 
             //only call cam.move if there is any actual movement:
+
+            direction *= Settings.playerBreakDown;
+            Console.WriteLine(direction.ToString());
+            direction = direction + (dir * Settings.playerSpeedUp);
+            if (direction.LengthSquared() > 1)
+                direction.Normalize();
+            if (direction.LengthSquared() < 0.1 * 0.1)
+                direction = Vector3.Zero;
+
             if(direction.LengthSquared() > 0)
-                cam.move(direction * speed);
+                cam.move(direction * Settings.playerSpeed);
 
             cam.rotation = controler.rotate();
 
