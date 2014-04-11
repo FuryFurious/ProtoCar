@@ -44,7 +44,7 @@ namespace ProtoCar
 
             drawEffectDuration -= gameTime.ElapsedGameTime.TotalSeconds;
 
-            Vector3 direction = controler.getMoveDirection();
+            Vector3 dir = controler.getMoveDirection();
 
             //only call cam.move if there is any actual movement:
 
@@ -56,9 +56,10 @@ namespace ProtoCar
             if (direction.LengthSquared() < 0.1 * 0.1)
                 direction = Vector3.Zero;
 
-            if (Game1.keyboardState.IsKeyPressed(SharpDX.Toolkit.Input.Keys.Space))
+            if (controler.speedPressed())
                 speed = 10f;
-            if (Game1.keyboardState.IsKeyReleased(SharpDX.Toolkit.Input.Keys.Space))
+
+            if (!controler.speedPressed())
                 speed = 1f;
 
             if(direction.LengthSquared() > 0)

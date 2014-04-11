@@ -11,6 +11,7 @@ namespace ProtoCar
 
     public interface PlayerController
     {
+        bool speedPressed();
         void update();
         Vector3 getMoveDirection();
         Vector3 rotate();
@@ -41,6 +42,11 @@ namespace ProtoCar
                 direction += Vector3.UnitX;
 
             return direction;
+        }
+
+        public bool speedPressed()
+        {
+            return Game1.keyboardState.IsKeyDown(Keys.LeftShift);
         }
 
         public Vector3 rotate()
@@ -102,6 +108,11 @@ namespace ProtoCar
                 direction += Vector3.UnitX;
 
             return direction;
+        }
+
+        public bool speedPressed()
+        {
+            return Game1.keyboardState.IsKeyDown(Keys.RightShift);
         }
 
         public Vector3 rotate()
@@ -169,6 +180,11 @@ namespace ProtoCar
             this.rotation += new Vector3(rotation.Y, -rotation.X, 0) * Settings.gamePadSpeed;
 
             return this.rotation;
+        }
+
+        public bool speedPressed()
+        {
+            return gamepad.isPressed(SharpDX.XInput.GamepadButtonFlags.A);
         }
 
 

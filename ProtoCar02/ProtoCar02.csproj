@@ -37,6 +37,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SharpDX.Toolkit.Input, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\SharpDX\Bin\DirectX11-net40\SharpDX.Toolkit.Input.dll</HintPath>
+    </Reference>
     <Reference Include="SharpDX.XInput">
       <HintPath>..\..\..\..\..\..\Frameworks\SharpDx\Bin\DirectX11-net40\SharpDX.XInput.dll</HintPath>
     </Reference>
