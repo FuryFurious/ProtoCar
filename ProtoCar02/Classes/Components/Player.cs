@@ -20,7 +20,8 @@ namespace ProtoCar
 
         PlayerController controler;
 
-        Vector3 direction;
+        float speed = 1.0f;
+        Vector3 direction = Vector3.Zero;
 
 
         public Player(PlayerController controler)
@@ -41,7 +42,6 @@ namespace ProtoCar
             controler.update();
 
             Vector3 dir = controler.getMoveDirection();
-            dir.Normalize();
 
             //only call cam.move if there is any actual movement:
 
@@ -53,8 +53,13 @@ namespace ProtoCar
             if (direction.LengthSquared() < 0.1 * 0.1)
                 direction = Vector3.Zero;
 
+            if (Game1.keyboardState.IsKeyPressed(SharpDX.Toolkit.Input.Keys.Space))
+                speed = 10f;
+            if (Game1.keyboardState.IsKeyReleased(SharpDX.Toolkit.Input.Keys.Space))
+                speed = 1f;
+
             if(direction.LengthSquared() > 0)
-                cam.move(direction * Settings.playerSpeed);
+                cam.move(direction * speed * Settings.playerSpeed);
 
             cam.rotation = controler.rotate();
 
