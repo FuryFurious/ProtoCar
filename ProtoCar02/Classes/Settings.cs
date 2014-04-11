@@ -18,7 +18,7 @@ namespace ProtoCar
         public static int windowHeight              = 600;
 
         //how to controll:
-        public static PlayerController controller1  = new PlayerGamepad(SharpDX.XInput.UserIndex.One);
+        public static PlayerController controller1 = new PlayerArrow(); // new PlayerGamepad(SharpDX.XInput.UserIndex.One);
         public static PlayerController controller2  = new PlayerWASD();
          
 
@@ -31,6 +31,8 @@ namespace ProtoCar
 
         //movementSpeed
         public static float     playerSpeed         = 0.25f;
+        public static float     playerSpeedUp       = 0.1f;   // 1f == full speed;
+        public static float     playerBreakDown     = 0.9f;   // 1f == no break;
 
         //rotationSpeeds:
         public static float     mouseSpeed          = 0.75f;
@@ -42,9 +44,6 @@ namespace ProtoCar
         //respawn settings for pointboxes:
         public static double    respawnInterval     = 5.0;
         public static float     respawnDistance     = 36.0f;
-
-
-
 
 
 

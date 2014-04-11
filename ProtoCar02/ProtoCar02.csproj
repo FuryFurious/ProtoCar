@@ -37,9 +37,6 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SharpDX.Toolkit.Audio">
-      <HintPath>..\..\..\..\..\..\Frameworks\SharpDx\Bin\DirectX11-net40\SharpDX.Toolkit.Audio.dll</HintPath>
-    </Reference>
     <Reference Include="SharpDX.XInput">
       <HintPath>..\..\..\..\..\..\Frameworks\SharpDx\Bin\DirectX11-net40\SharpDX.XInput.dll</HintPath>
     </Reference>
