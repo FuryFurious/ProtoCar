@@ -22,6 +22,8 @@ namespace ProtoCar
 
         float speed = Settings.playerSpeed;
 
+        public double drawEffectDuration = 0;
+
         public Player(PlayerController controler)
         {
             this.primitive = GeometricPrimitive.Teapot.New(Game1.gManager.GraphicsDevice, 1.0f, 8, false);
@@ -39,6 +41,8 @@ namespace ProtoCar
         {
             controler.update();
 
+            drawEffectDuration -= gameTime.ElapsedGameTime.TotalSeconds;
+
             Vector3 direction = controler.getMoveDirection();
 
             //only call cam.move if there is any actual movement:
@@ -55,6 +59,14 @@ namespace ProtoCar
             bEffect.View = cam.view;
             bEffect.Projection = cam.projection;
         }
+
+        public void addPoints(int points)
+        {
+            this.points += points;
+            this.drawEffectDuration = Settings.effectDuration;
+        }
+
+
 
     }
 }

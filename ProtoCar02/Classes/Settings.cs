@@ -31,6 +31,7 @@ namespace ProtoCar
 
         //movementSpeed
         public static float     playerSpeed         = 0.25f;
+        public static double    effectDuration      = 1.0f;
 
         //rotationSpeeds:
         public static float     mouseSpeed          = 0.75f;

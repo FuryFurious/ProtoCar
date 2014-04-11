@@ -17,7 +17,7 @@ namespace ProtoCar
 
         public override void onHit(Player player)
         {
-            player.points++;
+            player.addPoints(1);
         }
     }
 }

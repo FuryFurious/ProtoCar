@@ -33,6 +33,7 @@ namespace ProtoCar
         public static Texture2D hud;
         public static Texture2D stoneTextureBig;
         public static Texture2D blueTexture;
+        public static Texture2D hitEffectTexture;
         
         public static SpriteFont font;
 
@@ -93,6 +94,7 @@ namespace ProtoCar
             skydome = Content.Load<Model>("skydome");
             stoneTextureBig = Content.Load<Texture2D>("StoneFloorBig");
             blueTexture = Content.Load<Texture2D>("blueTexture");
+            hitEffectTexture = Content.Load<Texture2D>("hitEffect");
 
             alphaBlend = BlendState.New(GraphicsDevice, 
                                                 SharpDX.Direct3D11.BlendOption.SourceAlpha,         //sourceBlend
