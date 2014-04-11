@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Components\APickUp.cs" />
+    <Compile Include="Classes\Components\ThirdPersonCamera.cs" />
     <Compile Include="Classes\Components\Camera.cs" />
     <Compile Include="Classes\Components\CustomGamepad.cs" />
     <Compile Include="Classes\Components\PointPickUp.cs" />
@@ -95,6 +96,11 @@
   </ItemGroup>
   <ItemGroup>
     <ToolkitTexture Include="Content\blueTexture.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </ToolkitTexture>
+  </ItemGroup>
+  <ItemGroup>
+    <ToolkitTexture Include="Content\hitEffect.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </ToolkitTexture>
   </ItemGroup>

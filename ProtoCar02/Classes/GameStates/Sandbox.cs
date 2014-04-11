@@ -21,6 +21,7 @@ namespace ProtoCar
 
         Player player1;
         Player player2;
+
         List<Item> items;
 
         List<APickUp> pickups = new List<APickUp>();
@@ -45,6 +46,8 @@ namespace ProtoCar
 
 
         Matrix skydomeMatrix = Matrix.RotationX((float)Math.PI) * Matrix.Scaling(10, 10, 10);
+
+        
 
         double respawnCount;
 
@@ -198,6 +201,12 @@ namespace ProtoCar
                 Game1.spriteBatch.DrawString(Game1.font, "" + player2.points, new Vector2((100 - len2.X) / 2, viewport2.Bounds.Bottom - 60), Color.Black);
 
                 Game1.spriteBatch.DrawString(Game1.font, "" + 1.0f / (float)gameTime.ElapsedGameTime.TotalSeconds, Vector2.Zero, Color.Black);
+
+                if (player1.drawEffectDuration >= 0)
+                    Game1.spriteBatch.Draw(Game1.hitEffectTexture, new Rectangle((int)viewport1.X, (int)viewport1.Y, (int)viewport1.Width, (int)viewport1.Height), Color.White * Math.Max((float)player1.drawEffectDuration, 0));
+
+                if(player2.drawEffectDuration >= 0)
+                    Game1.spriteBatch.Draw(Game1.hitEffectTexture, new Rectangle((int)viewport2.X, (int)viewport2.Y, (int)viewport2.Width, (int)viewport2.Height), Color.White * Math.Max((float)player2.drawEffectDuration, 0));
 
                 Game1.spriteBatch.End();
             }

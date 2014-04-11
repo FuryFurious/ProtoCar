@@ -31,6 +31,7 @@ namespace ProtoCar
 
         //movementSpeed
         public static float     playerSpeed         = 0.25f;
+        public static double    effectDuration      = 1.0f;
         public static float     playerSpeedUp       = 0.1f;   // 1f == full speed;
         public static float     playerBreakDown     = 0.9f;   // 1f == no break;
 

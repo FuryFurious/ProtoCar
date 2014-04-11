@@ -23,6 +23,7 @@ namespace ProtoCar
         float speed = 1.0f;
         Vector3 direction = Vector3.Zero;
 
+        public double drawEffectDuration = 0;
 
         public Player(PlayerController controler)
         {
@@ -41,7 +42,9 @@ namespace ProtoCar
         {
             controler.update();
 
-            Vector3 dir = controler.getMoveDirection();
+            drawEffectDuration -= gameTime.ElapsedGameTime.TotalSeconds;
+
+            Vector3 direction = controler.getMoveDirection();
 
             //only call cam.move if there is any actual movement:
 
@@ -71,6 +74,14 @@ namespace ProtoCar
             bEffect.View = cam.view;
             bEffect.Projection = cam.projection;
         }
+
+        public void addPoints(int points)
+        {
+            this.points += points;
+            this.drawEffectDuration = Settings.effectDuration;
+        }
+
+
 
     }
 }
