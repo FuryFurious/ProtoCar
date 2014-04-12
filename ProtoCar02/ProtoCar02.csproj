@@ -37,10 +37,6 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SharpDX.Toolkit.Input, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\SharpDX\Bin\DirectX11-net40\SharpDX.Toolkit.Input.dll</HintPath>
-    </Reference>
     <Reference Include="SharpDX.XInput">
       <HintPath>..\..\..\..\..\..\Frameworks\SharpDx\Bin\DirectX11-net40\SharpDX.XInput.dll</HintPath>
     </Reference>
@@ -54,8 +50,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Components\APickUp.cs" />
-    <Compile Include="Classes\Components\ThirdPersonCamera.cs" />
-    <Compile Include="Classes\Components\Camera.cs" />
+    <Compile Include="Classes\Cameras\FirstPersonCamera.cs" />
+    <Compile Include="Classes\Cameras\ThirdPersonCamera.cs" />
+    <Compile Include="Classes\Cameras\ACamera.cs" />
     <Compile Include="Classes\Components\CustomGamepad.cs" />
     <Compile Include="Classes\Components\PointPickUp.cs" />
     <Compile Include="Classes\Game1.cs" />

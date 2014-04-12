@@ -64,8 +64,8 @@ namespace ProtoCar
             //makes the specularPower more dull:
             bEffect.SpecularPower = 100.0f;
 
-            player1 = new Player(Settings.controller1);
-            player2 = new Player(Settings.controller2);
+            player1 = new Player(Settings.controller1, new Vector3(0,1,0));
+            player2 = new Player(Settings.controller2, new Vector3(0, 1, 0));
 
 
             items = new List<Item>();// { new Item(new Vector3(0, 0, 10)) };
@@ -93,10 +93,10 @@ namespace ProtoCar
 
             //updating the boundinbBoxes:
             //TODO: add them to player / objects
-            b1.Minimum = player1.cam.position;
-            b2.Minimum = player2.cam.position;
-            b1.Maximum = player1.cam.position + new Vector3(1, 1, 1);
-            b2.Maximum = player2.cam.position + new Vector3(1, 1, 1);
+            b1.Minimum = player1.position;
+            b2.Minimum = player2.position;
+            b1.Maximum = player1.position + new Vector3(1, 1, 1);
+            b2.Maximum = player2.position + new Vector3(1, 1, 1);
 
 
             for (int i = 0; i < pickups.Count; i++)
@@ -147,6 +147,9 @@ namespace ProtoCar
             player2.primitive.Draw(bEffect);
 
 
+            bEffect.World = player1.world;
+            player1.primitive.Draw(bEffect);
+
             foreach(APickUp pickup in pickups)
                 pickup.draw(bEffect.View, bEffect.Projection);
            
@@ -170,6 +173,9 @@ namespace ProtoCar
                 bEffect.Texture = Game1.stoneTexture;
                 bEffect.World = player1.world;
                 player1.primitive.Draw(bEffect);
+
+                bEffect.World = player2.world;
+                player2.primitive.Draw(bEffect);
 
                 foreach (APickUp pickup in pickups)
                     pickup.draw(bEffect.View, bEffect.Projection);

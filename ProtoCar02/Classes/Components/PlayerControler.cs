@@ -12,6 +12,7 @@ namespace ProtoCar
     public interface PlayerController
     {
         bool speedPressed();
+        void clamp(float xMin, float xMax);
         void update();
         Vector3 getMoveDirection();
         Vector3 rotate();
@@ -52,8 +53,6 @@ namespace ProtoCar
         public Vector3 rotate()
         {
 
-            rotation.X = MathUtil.Clamp(rotation.X, -1.5f, 1.5f);
-
             Vector2 mousePos = new Vector2(Game1.mouseState.X, Game1.mouseState.Y);
 
             float dx = mousePos.X - oldMouseX;
@@ -79,6 +78,12 @@ namespace ProtoCar
         public void update()
         {
          
+        }
+
+
+        public void clamp(float xMin, float xMax)
+        {
+            rotation.X = MathUtil.Clamp(rotation.X, xMin, xMax);
         }
     }
 
@@ -117,9 +122,6 @@ namespace ProtoCar
 
         public Vector3 rotate()
         {
-
-            rotation.X = MathUtil.Clamp(rotation.X, -1.5f, 1.5f);
-
             Vector2 mousePos = new Vector2(Game1.mouseState.X, Game1.mouseState.Y);
 
             float dx = mousePos.X - oldMouseX;
@@ -146,6 +148,11 @@ namespace ProtoCar
         {
 
         }
+
+        public void clamp(float xMin, float xMax)
+        {
+            rotation.X = MathUtil.Clamp(rotation.X, xMin, xMax);
+        }
     }
 
     public class PlayerGamepad : PlayerController
@@ -168,8 +175,6 @@ namespace ProtoCar
 
         public Vector3 rotate()
         {
-            //to limit up and down looking -> no roll over
-           this.rotation.X = MathUtil.Clamp(this.rotation.X, -1.5f, 1.5f);
 
             Vector2 rotation = gamepad.rightPad();
 
@@ -191,6 +196,11 @@ namespace ProtoCar
         public void update()
         {
             gamepad.update();
+        }
+
+        public void clamp(float xMin, float xMax)
+        {
+            rotation.X = MathUtil.Clamp(rotation.X, xMin, xMax);
         }
     }
 

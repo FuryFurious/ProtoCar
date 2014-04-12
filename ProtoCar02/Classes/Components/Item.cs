@@ -14,12 +14,12 @@ namespace ProtoCar
         public Matrix world;
         public GeometricPrimitive primitive;
         public BasicEffect bEffect;
-        public Camera cam;
+        public ACamera cam;
 
         public Item(Vector3 position)
         {
             this.primitive = GeometricPrimitive.Teapot.New(Game1.gManager.GraphicsDevice, 1.0f, 8, false);
-            this.cam = new Camera(Game1.gManager.GraphicsDevice, new Vector3(0, 0, 0));
+            this.cam = new FirstPersonCamera(Game1.gManager.GraphicsDevice);
             this.world = Matrix.Translation(position);
 
             this.bEffect = new BasicEffect(Game1.gManager.GraphicsDevice);

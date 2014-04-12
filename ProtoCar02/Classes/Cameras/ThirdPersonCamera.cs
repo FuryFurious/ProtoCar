@@ -9,22 +9,13 @@ using System.Threading.Tasks;
 
 namespace ProtoCar
 {
-    class Camera
+    class ThirdPersonCamera : ACamera
     {
-        public Vector3 position;
-        public Vector3 rotation;
-        public Vector3 direction;
+        public Vector3 offset;
 
-        public Matrix view;
-        public Matrix projection;
-        public Matrix viewProjection;
-
-        public Camera(GraphicsDevice device, Vector3 position)
+        public ThirdPersonCamera(GraphicsDevice device, Vector3 offset)
         {
-            this.position = position;
-
-            view = Matrix.LookAtRH(position, new Vector3(0,20,0), Vector3.Up);
-
+            this.offset = offset;
             projection = Matrix.PerspectiveFovRH(
               0.6f,                                                             // Field of view
               (float)device.BackBuffer.Width / (Settings.enablePlayer2 ? (device.BackBuffer.Height/2) : device.BackBuffer.Height),        // Aspect ratio //only height/2 because our Viewport is just height / 2
@@ -32,36 +23,37 @@ namespace ProtoCar
               500.0f);
         }
 
-
-        public void updateMatrices()
+        public override void updateMatrices(Vector3 position)
         {
- 
-            Matrix rotationMatrix = Matrix.RotationX(rotation.X) * Matrix.RotationY(rotation.Y);
-            direction = Helper.Transform(-Vector3.UnitZ, ref rotationMatrix);
-            direction.Normalize();
+            if (rotation.X > -0.15f)
+                rotation.X = -0.15f;
 
-            Vector3 lookAt = position + direction;
+            Matrix rotationM = Matrix.RotationYawPitchRoll(rotation.Y, rotation.X, 0);
+            Vector3 newOffset = Helper.Transform(offset, ref rotationM);
+            Vector3 ownPos = position - newOffset;
 
-            view = Matrix.LookAtRH(position, lookAt, Vector3.Up);
-
-            viewProjection = view * projection;
+            this.view = Matrix.LookAtRH(ownPos, position, Vector3.Up);
         }
 
-        public void move(Vector3 deltaPos)
+        public override Vector3 moved(Vector3 position, Vector3 deltaPos)
         {
             Matrix matrix;
 
-            if(Settings.enableNoclip)
+            if (Settings.enableNoclip)
                 matrix = Matrix.RotationYawPitchRoll(rotation.Y, rotation.X, 0);
 
             else
                 matrix = Matrix.RotationY(rotation.Y);
 
             position += Helper.Transform(deltaPos, ref matrix);
+
+            return position;
         }
 
 
-        
-
+        public override Vector2 clampMinMax()
+        {
+            return new Vector2(-1.5f, -0.75f);
+        }
     }
 }
