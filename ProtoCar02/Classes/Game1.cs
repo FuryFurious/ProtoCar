@@ -37,12 +37,15 @@ namespace ProtoCar
         public static Texture2D blueTexture;
         public static Texture2D hitEffectTexture;
         public static Texture2D pixelTexture;
+        public static Texture2D flameTexture;
         
         public static SpriteFont font;
 
         public static Model skydome;
 
         public static SoundEffect soundHit;
+
+        public static Random random = new Random();
 
         //assign this variable, to start with a different gameState
         EGameState currentState = EGameState.Sandbox;
@@ -108,6 +111,7 @@ namespace ProtoCar
             hitEffectTexture = Content.Load<Texture2D>("hitEffect");
             soundHit = Content.Load<SoundEffect>("pickup.wav");
             pixelTexture = Content.Load<Texture2D>("pixel");
+            flameTexture = Content.Load<Texture2D>("flameParticle");
 
 
 

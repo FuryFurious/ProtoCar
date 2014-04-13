@@ -17,8 +17,6 @@ namespace ProtoCar
     /// </summary>
     class Sandbox : IGameState
     {
-        public static Random random = new Random();
-
         DateTime startTime;
         Player player1;
         Player player2;
@@ -48,7 +46,7 @@ namespace ProtoCar
 
         Matrix skydomeMatrix = Matrix.RotationX((float)Math.PI) * Matrix.Scaling(10, 10, 10);
 
-        
+        public static List<BillboardParticle> particles = new List<BillboardParticle>();
 
         double respawnCount;
 
@@ -79,15 +77,26 @@ namespace ProtoCar
         {
             respawnCount -= gameTime.ElapsedGameTime.TotalSeconds;
 
+            for (int i = 0; i < particles.Count; i++)
+            {
+                particles[i].update(gameTime);
+
+                if (particles[i].lifeTime <= 0)
+                {
+                    particles.Remove(particles[i]);
+                    i--;
+                }
+            }
+
             if (startTime < DateTime.Now)
                 return EGameState.None;
 
             if (respawnCount <= 0)
             {
-                float x = ((float)random.NextDouble() - 0.5f) * 2.0f * Settings.respawnDistance;
-                float z = ((float)random.NextDouble() - 0.5f) * 2.0f * Settings.respawnDistance;
+                float x = ((float)Game1.random.NextDouble() - 0.5f) * 2.0f * Settings.respawnDistance;
+                float z = ((float)Game1.random.NextDouble() - 0.5f) * 2.0f * Settings.respawnDistance;
 
-                pickups.Add(new PointPickUp(new Vector3(x,1,z)));
+                pickups.Add(new PointPickUp(new Vector3(x, 1, z)));
 
                 respawnCount = Settings.respawnInterval;
             }
@@ -123,9 +132,6 @@ namespace ProtoCar
             //  foreach (Item item in items)
             //       item.update(gameTime);
 
-       
-
-
             return EGameState.Sandbox;
         }
 
@@ -157,9 +163,16 @@ namespace ProtoCar
             foreach(APickUp pickup in pickups)
                 pickup.draw(bEffect.View, bEffect.Projection);
 
-
             Game1.skydome.Draw(Game1.gManager.GraphicsDevice, skydomeMatrix, bEffect.View, bEffect.Projection);
 
+           
+            Game1.gManager.GraphicsDevice.SetDepthStencilState(Game1.gManager.GraphicsDevice.DepthStencilStates.None);
+            Game1.gManager.GraphicsDevice.SetBlendState(Game1.alphaBlend);
+            foreach (BillboardParticle p in particles)
+                p.draw(bEffect.View, bEffect.Projection, player1.cam.getPosition(), player1.cam.getDirection());
+            Game1.gManager.GraphicsDevice.SetBlendState(null);
+            Game1.gManager.GraphicsDevice.SetDepthStencilState(Game1.gManager.GraphicsDevice.DepthStencilStates.Default);
+ 
             
             if (Settings.enablePlayer2)
             {
@@ -185,6 +198,12 @@ namespace ProtoCar
 
                 Game1.skydome.Draw(Game1.gManager.GraphicsDevice, skydomeMatrix, bEffect.View, bEffect.Projection);
 
+                Game1.gManager.GraphicsDevice.SetDepthStencilState(Game1.gManager.GraphicsDevice.DepthStencilStates.None);
+                Game1.gManager.GraphicsDevice.SetBlendState(Game1.alphaBlend);
+                foreach (BillboardParticle p in particles)
+                    p.draw(bEffect.View, bEffect.Projection, player2.cam.getPosition(), player2.cam.getDirection());
+                Game1.gManager.GraphicsDevice.SetBlendState(null);
+                Game1.gManager.GraphicsDevice.SetDepthStencilState(Game1.gManager.GraphicsDevice.DepthStencilStates.Default);
 
 
                // foreach (Item item in items)

@@ -13,6 +13,9 @@ namespace ProtoCar
     {
         public Vector3 offset;
 
+        Vector3 cameraPos;
+        Vector3 direction;
+
         public ThirdPersonCamera(GraphicsDevice device, Vector3 offset)
         {
             this.offset = offset;
@@ -30,9 +33,12 @@ namespace ProtoCar
 
             Matrix rotationM = Matrix.RotationYawPitchRoll(rotation.Y, rotation.X, 0);
             Vector3 newOffset = Helper.Transform(offset, ref rotationM);
-            Vector3 ownPos = position - newOffset;
+            this.cameraPos = position - newOffset;
 
-            this.view = Matrix.LookAtRH(ownPos, position, Vector3.Up);
+            this.direction = position - this.cameraPos;
+            this.direction.Normalize();
+
+            this.view = Matrix.LookAtRH(this.cameraPos, position, Vector3.Up);
         }
 
         public override Vector3 moved(Vector3 position, Vector3 deltaPos)
@@ -70,6 +76,17 @@ namespace ProtoCar
                 return;
 
             offset += new Vector3(0, Settings.zoomSpeed, -Settings.zoomSpeed);
+        }
+
+        public override Vector3 getPosition()
+        {
+            return cameraPos;
+        }
+
+        public override Vector3 getDirection()
+        {
+           
+            return direction;
         }
     }
 }

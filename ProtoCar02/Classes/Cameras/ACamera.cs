@@ -31,5 +31,9 @@ namespace ProtoCar
         public abstract void zoomIn();
 
         public abstract void zoomOut();
+
+        public abstract Vector3 getPosition();
+
+        public abstract Vector3 getDirection();
     }
 }

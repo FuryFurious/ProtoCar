@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\BillboardParticle.cs" />
     <Compile Include="Classes\Components\APickUp.cs" />
     <Compile Include="Classes\Cameras\FirstPersonCamera.cs" />
     <Compile Include="Classes\Cameras\ThirdPersonCamera.cs" />
@@ -106,6 +107,9 @@
     </ToolkitTexture>
   </ItemGroup>
   <ItemGroup>
+    <ToolkitTexture Include="Content\flameParticle.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </ToolkitTexture>
     <Content Include="Content\pickup.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

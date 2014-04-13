@@ -67,5 +67,15 @@ namespace ProtoCar
         {
             
         }
+
+        public override Vector3 getPosition()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Vector3 getDirection()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

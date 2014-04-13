@@ -65,6 +65,9 @@ namespace ProtoCar
                 boostEnergy -= gameTime.ElapsedGameTime.TotalSeconds;
                 speed = 10f;
 
+                //TODO: make more beautiful:
+                Sandbox.particles.Add(new BillboardParticle(Game1.flameTexture, 0.01f, position, Vector3.Up));
+
                 if (boostEnergy <= 0)
                     speed = 1.0f;
             }
