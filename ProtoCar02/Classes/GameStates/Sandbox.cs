@@ -151,18 +151,16 @@ namespace ProtoCar
             bEffect.World = player2.world;
             player2.primitive.Draw(bEffect);
 
-
             bEffect.World = player1.world;
             player1.primitive.Draw(bEffect);
 
             foreach(APickUp pickup in pickups)
                 pickup.draw(bEffect.View, bEffect.Projection);
-           
+
 
             Game1.skydome.Draw(Game1.gManager.GraphicsDevice, skydomeMatrix, bEffect.View, bEffect.Projection);
 
-
-
+            
             if (Settings.enablePlayer2)
             {
                 //view for player 2
@@ -205,6 +203,10 @@ namespace ProtoCar
 
                 Game1.spriteBatch.Begin(SpriteSortMode.Deferred, Game1.alphaBlend, null, null, null, null);
 
+
+                Game1.spriteBatch.Draw(Game1.pixelTexture, new RectangleF(100.0f, viewport1.Bounds.Bottom - 60.0f, (float)player1.boostEnergy * 50.0f, 20.0f), Color.Blue);
+                Game1.spriteBatch.Draw(Game1.pixelTexture, new RectangleF(100.0f, viewport2.Bounds.Bottom - 60.0f, (float)player2.boostEnergy * 50.0f, 20.0f), Color.Blue);
+
                 Game1.spriteBatch.Draw(Game1.hud, new Vector2(0, viewport1.Bounds.Bottom - 100), Color.White);
                 Game1.spriteBatch.DrawString(Game1.font, "" + player1.points, new Vector2((100 - len1.X) / 2, viewport1.Bounds.Bottom - 60), Color.Black);
 
@@ -215,6 +217,7 @@ namespace ProtoCar
                 string time = (startTime - DateTime.Now).Minutes + ":" + (((startTime - DateTime.Now).Seconds < 10) ? ("0" + (startTime - DateTime.Now).Seconds) : ("" + (startTime - DateTime.Now).Seconds));
                 Game1.spriteBatch.DrawString(Game1.font, time, new Vector2((viewport1.Width - Game1.font.MeasureString(time).X) / 2, viewport1.Y + 10), Color.Black);
                 Game1.spriteBatch.DrawString(Game1.font, time, new Vector2((viewport2.Width - Game1.font.MeasureString(time).X) / 2, viewport2.Y + 10), Color.Black);
+
 
                 if (player1.drawEffectDuration >= 0)
                     Game1.spriteBatch.Draw(Game1.hitEffectTexture, new Rectangle((int)viewport1.X, (int)viewport1.Y, (int)viewport1.Width, (int)viewport1.Height), Color.White * Math.Max((float)player1.drawEffectDuration, 0));

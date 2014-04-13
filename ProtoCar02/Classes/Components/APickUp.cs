@@ -21,7 +21,8 @@ namespace ProtoCar
             this.effect = new BasicEffect(Game1.gManager.GraphicsDevice);
             this.effect.World = Matrix.Translation(position);
             this.effect.TextureEnabled = true;
-            this.effect.Texture = Game1.blueTexture;   
+            this.effect.Texture = Game1.blueTexture;
+            this.effect.Alpha = 0.5f;
         }
 
         public abstract void onHit(Player player);

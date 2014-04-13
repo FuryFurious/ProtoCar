@@ -13,18 +13,19 @@ namespace ProtoCar
     /// </summary>
     public static class Settings
     {
-        //1336 x 768
-        public static int windowWidth               = 800;
-        public static int windowHeight              = 600;
+        //1366 x 768
+        public static int windowWidth               = 1366;
+        public static int windowHeight              = 768;
 
         //how to controll:
-        public static PlayerController controller1 = new PlayerWASD();
-        public static PlayerController controller2 = new PlayerArrow(); //new PlayerGamepad(SharpDX.XInput.UserIndex.One);
+        public static PlayerController controller1  = new PlayerWASD();
+        public static PlayerController controller2  = new PlayerGamepad(SharpDX.XInput.UserIndex.One);//new PlayerArrow(); //new PlayerGamepad(SharpDX.XInput.UserIndex.One);
          
 
         //BUG: causes mouse to flip randomly around (wrong mousePosition to reset?)
         //NOTE: put fullscreen only on, if the windowWidth and windowHeight support your screen -> otherwise: exception
-        public static bool  enableFullscreen         = false;
+        //activate fullscreen with F1 ingame
+        public static bool      enableFullscreen    = false;
 
         public static bool      enablePlayer2       = true;
         public static bool      enableNoclip        = false;
@@ -32,22 +33,27 @@ namespace ProtoCar
         //movementSpeed
         public static float     playerSpeed         = 0.25f;
         public static double    effectDuration      = 1.0f;
-        public static float     playerSpeedUp       = 0.1f;   // 1f == full speed;
-        public static float     playerBreakDown     = 0.9f;   // 1f == no break;
+        public static float     playerSpeedUp       = 0.1f;   // 1.0f == full speed;
+        public static float     playerBreakDown     = 0.9f;   // 1.0f == no break;
 
         //rotationSpeeds:
         public static float     mouseSpeed          = 0.75f;
-        public static Vector3   gamePadSpeed        = new Vector3(0.03f, 0.03f, 0); //sometimes it feels better with different x and y
+        public static Vector3   gamePadSpeed        = new Vector3(0.1f, 0.1f, 0); //sometimes it feels better with different x and y
 
+        //Camera Zoom
         public static float     zoomSpeed           = 0.1f;
         public static float     maxZoomIn           = 1.5f;
         public static float     maxZoomOut          = 10.0f;
+
         //between 0 and 1
         public static float     gamePadYawDeadZone  = 0.5f;
 
         //respawn settings for pointboxes:
         public static double    respawnInterval     = 5.0;
         public static float     respawnDistance     = 36.0f;
+
+        //energy (in seconds) when on item pickup
+        public static double    receivedEnergy      = 0.25;
 
 
 

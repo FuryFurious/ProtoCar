@@ -76,6 +76,7 @@ namespace ProtoCar
             if (Math.Abs(y) < 0.008f)
                 y = 0;
 
+         
             //negative numbers are a bit smaller than -1.0f so clamp them there.... no need for positiv numbers
             //happens because raw value varies from [-2^15, (2^15)-1] 
             if (y < -1.0f)

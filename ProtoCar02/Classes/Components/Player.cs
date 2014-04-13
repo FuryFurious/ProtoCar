@@ -24,6 +24,7 @@ namespace ProtoCar
         float speed = 1.0f;
         Vector3 direction = Vector3.Zero;
 
+        public double boostEnergy = 0;
         public double drawEffectDuration = 0;
 
         public Player(PlayerController controler, Vector3 position)
@@ -55,13 +56,20 @@ namespace ProtoCar
             direction = direction + (dir * Settings.playerSpeedUp);
             if (direction.LengthSquared() > 1)
                 direction.Normalize();
-            if (direction.LengthSquared() < 0.1 * 0.1)
-                direction = Vector3.Zero;
 
-            if (controler.speedPressed())
+         //   else if (direction.LengthSquared() < 0.001)
+         //       direction = Vector3.Zero;
+
+            if (controler.speedPressed() && boostEnergy > 0)
+            {
+                boostEnergy -= gameTime.ElapsedGameTime.TotalSeconds;
                 speed = 10f;
 
-            if (!controler.speedPressed())
+                if (boostEnergy <= 0)
+                    speed = 1.0f;
+            }
+
+            else if (!controler.speedPressed())
                 speed = 1f;
 
             if(direction.LengthSquared() > 0)

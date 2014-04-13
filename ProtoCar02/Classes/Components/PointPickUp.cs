@@ -17,6 +17,7 @@ namespace ProtoCar
 
         public override void onHit(Player player)
         {
+            player.boostEnergy += Settings.receivedEnergy;
             player.addPoints(1);
             Game1.soundHit.Play();
         }

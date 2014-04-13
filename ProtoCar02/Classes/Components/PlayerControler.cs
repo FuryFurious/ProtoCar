@@ -75,8 +75,8 @@ namespace ProtoCar
 
         private void resetMouse()
         {
-            Game1.mouseManager.SetPosition(new Vector2(0.5f));
-
+            Game1.mouseManager.SetPosition(new Vector2(0.5f, 0.5f));
+           
             oldMouseX = 0.5f;
             oldMouseY = 0.5f;
         }
@@ -154,7 +154,7 @@ namespace ProtoCar
 
         private void resetMouse()
         {
-            Game1.mouseManager.SetPosition(new Vector2(0.5f));
+            Game1.mouseManager.SetPosition(new Vector2(0.5f, 0.5f));
 
             oldMouseX = 0.5f;
             oldMouseY = 0.5f;
@@ -195,6 +195,9 @@ namespace ProtoCar
         public Vector3 getMoveDirection()
         {
             Vector2 direction = gamepad.leftPad();
+
+
+            direction.X = (1 - Math.Abs(direction.Y) * Settings.gamePadYawDeadZone) * direction.X;
 
             return new Vector3(direction.X, 0, -direction.Y);
         }

@@ -36,6 +36,7 @@ namespace ProtoCar
         public static Texture2D stoneTextureBig;
         public static Texture2D blueTexture;
         public static Texture2D hitEffectTexture;
+        public static Texture2D pixelTexture;
         
         public static SpriteFont font;
 
@@ -62,12 +63,16 @@ namespace ProtoCar
             gManager.PreferredBackBufferHeight = Settings.windowHeight;
 
             //CARE: when fullscreened the mouse starts to bug out: (wrong reset-coordinates?)
-            gManager.IsFullScreen = Settings.enableFullscreen;
+         
+            
+
+          
 
         }
 
         private void gainedFocus(object sender, EventArgs e)
         {
+           
             active = true;
         }
 
@@ -83,6 +88,7 @@ namespace ProtoCar
             //to keep track if the window has focus or not (e.g. for not reseting the mouse pos)
             Window.Deactivated += lostFocus;
             Window.Activated += gainedFocus;
+           
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -101,6 +107,9 @@ namespace ProtoCar
             blueTexture = Content.Load<Texture2D>("blueTexture");
             hitEffectTexture = Content.Load<Texture2D>("hitEffect");
             soundHit = Content.Load<SoundEffect>("pickup.wav");
+            pixelTexture = Content.Load<Texture2D>("pixel");
+
+
 
             alphaBlend = BlendState.New(GraphicsDevice, 
                                                 SharpDX.Direct3D11.BlendOption.SourceAlpha,         //sourceBlend
@@ -136,6 +145,13 @@ namespace ProtoCar
 
             if (currentState != prevState)
                 handleNewGameState();
+
+            if(keyboardState.IsKeyPressed(Keys.F1))
+            {
+                Settings.enableFullscreen = !Settings.enableFullscreen;
+                gManager.IsFullScreen = Settings.enableFullscreen;
+                gManager.ApplyChanges();
+            }
 
             base.Update(gameTime);
         }
