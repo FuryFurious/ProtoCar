@@ -1,5 +1,6 @@
 ﻿using SharpDX;
 using SharpDX.Toolkit;
+using SharpDX.Toolkit.Audio;
 using SharpDX.Toolkit.Graphics;
 using SharpDX.Toolkit.Input;
 using System;
@@ -14,6 +15,7 @@ namespace ProtoCar
     {
         //TODO: dont make everything public static... but for prototyping its the easiest way
         public static GraphicsDeviceManager gManager;
+        public static AudioManager aManager;
 
         public static SpriteBatch spriteBatch;
 
@@ -22,6 +24,7 @@ namespace ProtoCar
 
         public static MouseManager mouseManager;
         public static MouseState mouseState;
+        public static MouseState oldMouseState;
 
         public static BlendState alphaBlend;
         public static BlendState opaqueBlend;
@@ -38,6 +41,8 @@ namespace ProtoCar
 
         public static Model skydome;
 
+        public static SoundEffect soundHit;
+
         //assign this variable, to start with a different gameState
         EGameState currentState = EGameState.Sandbox;
         EGameState prevState;
@@ -49,6 +54,7 @@ namespace ProtoCar
             gManager = new GraphicsDeviceManager(this);
             keyboardManager = new KeyboardManager(this);
             mouseManager = new MouseManager(this);
+            aManager = new AudioManager(this);
 
             Content.RootDirectory = "Content";
 
@@ -94,6 +100,7 @@ namespace ProtoCar
             stoneTextureBig = Content.Load<Texture2D>("StoneFloorBig");
             blueTexture = Content.Load<Texture2D>("blueTexture");
             hitEffectTexture = Content.Load<Texture2D>("hitEffect");
+            soundHit = Content.Load<SoundEffect>("pickup.wav");
 
             alphaBlend = BlendState.New(GraphicsDevice, 
                                                 SharpDX.Direct3D11.BlendOption.SourceAlpha,         //sourceBlend
@@ -117,6 +124,8 @@ namespace ProtoCar
         protected override void Update(GameTime gameTime)
         {
             keyboardState = keyboardManager.GetState();
+
+            oldMouseState = mouseState;
             mouseState = mouseManager.GetState();
 
 

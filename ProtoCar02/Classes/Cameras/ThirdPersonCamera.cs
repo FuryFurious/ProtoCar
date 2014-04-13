@@ -55,5 +55,21 @@ namespace ProtoCar
         {
             return new Vector2(-1.5f, -0.75f);
         }
+
+        public override void zoomIn()
+        {
+            if (offset.Y <= Settings.maxZoomIn)
+                return;
+
+            offset -= new Vector3(0,Settings.zoomSpeed, -Settings.zoomSpeed);
+        }
+
+        public override void zoomOut()
+        {
+            if (offset.Y >= Settings.maxZoomOut)
+                return;
+
+            offset += new Vector3(0, Settings.zoomSpeed, -Settings.zoomSpeed);
+        }
     }
 }

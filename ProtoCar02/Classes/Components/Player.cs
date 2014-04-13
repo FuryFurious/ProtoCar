@@ -73,6 +73,12 @@ namespace ProtoCar
 
             cam.rotation = controler.rotate();
 
+            if (controler.zoomIn())
+                cam.zoomIn();
+
+            else if (controler.zoomOut())
+                cam.zoomOut();
+
             cam.updateMatrices(this.position);
         
             world = Matrix.RotationYawPitchRoll(cam.rotation.Y, cam.rotation.X, 0) * Matrix.Translation(this.position);

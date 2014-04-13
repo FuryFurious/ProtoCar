@@ -11,9 +11,13 @@ namespace ProtoCar
 
     public interface PlayerController
     {
+        bool zoomIn();
+        bool zoomOut();
         bool speedPressed();
+
         void clamp(float xMin, float xMax);
         void update();
+
         Vector3 getMoveDirection();
         Vector3 rotate();
     }
@@ -25,6 +29,8 @@ namespace ProtoCar
 
         private float oldMouseX;
         private float oldMouseY;
+
+        private int oldMouseWheel;
 
         public Vector3 getMoveDirection()
         {
@@ -84,6 +90,16 @@ namespace ProtoCar
         public void clamp(float xMin, float xMax)
         {
             rotation.X = MathUtil.Clamp(rotation.X, xMin, xMax);
+        }
+
+        public bool zoomIn()
+        {
+            return Game1.mouseState.WheelDelta - Game1.oldMouseState.WheelDelta > 0;
+        }
+
+        public bool zoomOut()
+        {
+            return Game1.mouseState.WheelDelta - Game1.oldMouseState.WheelDelta < 0;
         }
     }
 
@@ -153,6 +169,16 @@ namespace ProtoCar
         {
             rotation.X = MathUtil.Clamp(rotation.X, xMin, xMax);
         }
+
+        public bool zoomIn()
+        {
+           return Game1.mouseState.WheelDelta - Game1.oldMouseState.WheelDelta > 0;
+        }
+
+        public bool zoomOut()
+        {
+           return Game1.mouseState.WheelDelta - Game1.oldMouseState.WheelDelta < 0;
+        }
     }
 
     public class PlayerGamepad : PlayerController
@@ -201,6 +227,16 @@ namespace ProtoCar
         public void clamp(float xMin, float xMax)
         {
             rotation.X = MathUtil.Clamp(rotation.X, xMin, xMax);
+        }
+
+        public bool zoomIn()
+        {
+            return gamepad.isPressed(SharpDX.XInput.GamepadButtonFlags.DPadUp);
+        }
+
+        public bool zoomOut()
+        {
+            return gamepad.isPressed(SharpDX.XInput.GamepadButtonFlags.DPadDown);
         }
     }
 

@@ -55,5 +55,17 @@ namespace ProtoCar
         {
             return new Vector2(-1.5f, 1.5f);
         }
+
+
+
+        public override void zoomIn()
+        {
+         
+        }
+
+        public override void zoomOut()
+        {
+            
+        }
     }
 }

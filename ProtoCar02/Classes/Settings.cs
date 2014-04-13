@@ -37,8 +37,11 @@ namespace ProtoCar
 
         //rotationSpeeds:
         public static float     mouseSpeed          = 0.75f;
-        public static Vector3   gamePadSpeed        = new Vector3(0.03f, 0.03f, 0); //sometimes it feels better with different settings
+        public static Vector3   gamePadSpeed        = new Vector3(0.03f, 0.03f, 0); //sometimes it feels better with different x and y
 
+        public static float     zoomSpeed           = 0.1f;
+        public static float     maxZoomIn           = 1.5f;
+        public static float     maxZoomOut          = 10.0f;
         //between 0 and 1
         public static float     gamePadYawDeadZone  = 0.5f;
 

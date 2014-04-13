@@ -18,6 +18,7 @@ namespace ProtoCar
         public override void onHit(Player player)
         {
             player.addPoints(1);
+            Game1.soundHit.Play();
         }
     }
 }

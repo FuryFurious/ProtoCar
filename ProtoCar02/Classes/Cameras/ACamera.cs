@@ -27,5 +27,9 @@ namespace ProtoCar
         public abstract Vector3 moved(Vector3 position, Vector3 deltaPos);
 
         public abstract Vector2 clampMinMax();
+
+        public abstract void zoomIn();
+
+        public abstract void zoomOut();
     }
 }
