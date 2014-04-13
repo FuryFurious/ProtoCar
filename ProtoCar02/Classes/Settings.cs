@@ -18,8 +18,8 @@ namespace ProtoCar
         public static int windowHeight              = 600;
 
         //how to controll:
-        public static PlayerController controller1 = new PlayerArrow(); // new PlayerGamepad(SharpDX.XInput.UserIndex.One);
-        public static PlayerController controller2  = new PlayerWASD();
+        public static PlayerController controller1 = new PlayerWASD();
+        public static PlayerController controller2 = new PlayerArrow(); //new PlayerGamepad(SharpDX.XInput.UserIndex.One);
          
 
         //BUG: causes mouse to flip randomly around (wrong mousePosition to reset?)

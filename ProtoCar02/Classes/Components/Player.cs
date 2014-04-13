@@ -11,9 +11,10 @@ namespace ProtoCar
 {
     class Player
     {
+        public Vector3 position;
         public Matrix world;
         public GeometricPrimitive primitive;
-        public Camera cam;
+        public ACamera cam;
         public BasicEffect bEffect;
 
         public int points = 0;
@@ -25,11 +26,12 @@ namespace ProtoCar
 
         public double drawEffectDuration = 0;
 
-        public Player(PlayerController controler)
+        public Player(PlayerController controler, Vector3 position)
         {
+            this.position = position;
             this.primitive = GeometricPrimitive.Teapot.New(Game1.gManager.GraphicsDevice, 1.0f, 8, false);
             this.controler = controler;
-            this.cam = new Camera(Game1.gManager.GraphicsDevice, new Vector3(0, 1.0f, 0));
+            this.cam = new ThirdPersonCamera(Game1.gManager.GraphicsDevice, new Vector3(0,5,-5));
 
             this.bEffect = new BasicEffect(Game1.gManager.GraphicsDevice);
             bEffect.SpecularColor = new Vector3(0, 0, 0);
@@ -44,29 +46,36 @@ namespace ProtoCar
 
             drawEffectDuration -= gameTime.ElapsedGameTime.TotalSeconds;
 
+            Vector3 dir = controler.getMoveDirection();
+
             //only call cam.move if there is any actual movement:
 
             direction *= Settings.playerBreakDown;
-            Console.WriteLine(direction.ToString());
-            direction = direction + (controler.getMoveDirection() * Settings.playerSpeedUp);
+          //  Console.WriteLine(direction.ToString());
+            direction = direction + (dir * Settings.playerSpeedUp);
             if (direction.LengthSquared() > 1)
                 direction.Normalize();
             if (direction.LengthSquared() < 0.1 * 0.1)
                 direction = Vector3.Zero;
 
-            if (Game1.keyboardState.IsKeyPressed(SharpDX.Toolkit.Input.Keys.Space))
+            if (controler.speedPressed())
                 speed = 10f;
-            if (Game1.keyboardState.IsKeyReleased(SharpDX.Toolkit.Input.Keys.Space))
+
+            if (!controler.speedPressed())
                 speed = 1f;
 
             if(direction.LengthSquared() > 0)
-                cam.move(direction * speed * Settings.playerSpeed);
+                this.position = cam.moved(this.position, direction * speed * Settings.playerSpeed);
+
+
+            Vector2 clampArea = cam.clampMinMax();
+            controler.clamp(clampArea.X, clampArea.Y);
 
             cam.rotation = controler.rotate();
 
-            cam.updateMatrices();
+            cam.updateMatrices(this.position);
         
-            world = Matrix.RotationYawPitchRoll(cam.rotation.Y, cam.rotation.X, 0) * Matrix.Translation(cam.position);
+            world = Matrix.RotationYawPitchRoll(cam.rotation.Y, cam.rotation.X, 0) * Matrix.Translation(this.position);
 
             bEffect.World = world;
             bEffect.View = cam.view;
