@@ -19,6 +19,7 @@ namespace ProtoCar
     {
         public static Random random = new Random();
 
+        DateTime startTime;
         Player player1;
         Player player2;
 
@@ -69,6 +70,7 @@ namespace ProtoCar
 
 
             items = new List<Item>();// { new Item(new Vector3(0, 0, 10)) };
+            startTime = DateTime.Now.AddMinutes(3.5);
 
             groundPlane = GeometricPrimitive.Plane.New(Game1.gManager.GraphicsDevice, 360.0f, 360.0f, 1, false);
         }
@@ -76,6 +78,9 @@ namespace ProtoCar
         public EGameState update(GameTime gameTime)
         {
             respawnCount -= gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (startTime < DateTime.Now)
+                return EGameState.None;
 
             if (respawnCount <= 0)
             {
@@ -207,6 +212,9 @@ namespace ProtoCar
                 Game1.spriteBatch.DrawString(Game1.font, "" + player2.points, new Vector2((100 - len2.X) / 2, viewport2.Bounds.Bottom - 60), Color.Black);
 
                 Game1.spriteBatch.DrawString(Game1.font, "" + 1.0f / (float)gameTime.ElapsedGameTime.TotalSeconds, Vector2.Zero, Color.Black);
+                string time = (startTime - DateTime.Now).Minutes + ":" + (((startTime - DateTime.Now).Seconds < 10) ? ("0" + (startTime - DateTime.Now).Seconds) : ("" + (startTime - DateTime.Now).Seconds));
+                Game1.spriteBatch.DrawString(Game1.font, time, new Vector2((viewport1.Width - Game1.font.MeasureString(time).X) / 2, viewport1.Y + 10), Color.Black);
+                Game1.spriteBatch.DrawString(Game1.font, time, new Vector2((viewport2.Width - Game1.font.MeasureString(time).X) / 2, viewport2.Y + 10), Color.Black);
 
                 if (player1.drawEffectDuration >= 0)
                     Game1.spriteBatch.Draw(Game1.hitEffectTexture, new Rectangle((int)viewport1.X, (int)viewport1.Y, (int)viewport1.Width, (int)viewport1.Height), Color.White * Math.Max((float)player1.drawEffectDuration, 0));
