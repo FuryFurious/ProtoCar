@@ -44,13 +44,11 @@ namespace ProtoCar
 
             drawEffectDuration -= gameTime.ElapsedGameTime.TotalSeconds;
 
-            Vector3 direction = controler.getMoveDirection();
-
             //only call cam.move if there is any actual movement:
 
             direction *= Settings.playerBreakDown;
             Console.WriteLine(direction.ToString());
-            direction = direction + (dir * Settings.playerSpeedUp);
+            direction = direction + (controler.getMoveDirection() * Settings.playerSpeedUp);
             if (direction.LengthSquared() > 1)
                 direction.Normalize();
             if (direction.LengthSquared() < 0.1 * 0.1)
