@@ -19,13 +19,13 @@ namespace ProtoCar
 
         //how to controll:
         public static PlayerController controller1  = new PlayerWASD();
-        public static PlayerController controller2  = new PlayerGamepad(SharpDX.XInput.UserIndex.One);//new PlayerArrow(); //new PlayerGamepad(SharpDX.XInput.UserIndex.One);
+        public static PlayerController controller2  = new PlayerArrow(); //new PlayerGamepad(SharpDX.XInput.UserIndex.One);
          
 
         //BUG: causes mouse to flip randomly around (wrong mousePosition to reset?)
         //NOTE: put fullscreen only on, if the windowWidth and windowHeight support your screen -> otherwise: exception
         //activate fullscreen with F1 ingame
-        public static bool      enableFullscreen    = false;
+        public static bool      enableFullscreen    = true;
 
         public static bool      enablePlayer2       = true;
         public static bool      enableNoclip        = false;
@@ -53,7 +53,11 @@ namespace ProtoCar
         public static float     respawnDistance     = 36.0f;
 
         //energy (in seconds) when on item pickup
-        public static double    receivedEnergy      = 0.25;
+        public static double    receivedEnergy      = 0.5;
+
+
+        public static int       numStarParticles    = 50;
+        public static int       numSmokeParticles   = 3;
 
 
 

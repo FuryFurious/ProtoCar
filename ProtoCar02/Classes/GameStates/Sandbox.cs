@@ -24,6 +24,7 @@ namespace ProtoCar
         List<Item> items;
 
         List<APickUp> pickups = new List<APickUp>();
+        public static List<Bullet> bullets = new List<Bullet>();
 
         //plane
         GeometricPrimitive groundPlane;
@@ -45,6 +46,7 @@ namespace ProtoCar
 
 
         Matrix skydomeMatrix = Matrix.RotationX((float)Math.PI) * Matrix.Scaling(10, 10, 10);
+      
 
         public static List<BillboardParticle> particles = new List<BillboardParticle>();
 
@@ -57,6 +59,9 @@ namespace ProtoCar
 
         public void init()
         {
+
+          //  bullets.Add(new Bullet(new Vector3(0, 0, 0), new Vector3(0, 0, 0)));
+
             bEffect.EnableDefaultLighting();
             bEffect.TextureEnabled = true;
             bEffect.Texture = Game1.stoneTextureBig;
@@ -93,8 +98,8 @@ namespace ProtoCar
 
             if (respawnCount <= 0)
             {
-                float x = ((float)Game1.random.NextDouble() - 0.5f) * 2.0f * Settings.respawnDistance;
-                float z = ((float)Game1.random.NextDouble() - 0.5f) * 2.0f * Settings.respawnDistance;
+                float x = ((float)Game1.random.NextDouble() - 0.5f) * 2.0f * Settings.respawnDistance; //random x coord
+                float z = ((float)Game1.random.NextDouble() - 0.5f) * 2.0f * Settings.respawnDistance; //random z coord
 
                 pickups.Add(new PointPickUp(new Vector3(x, 1, z)));
 
@@ -127,6 +132,47 @@ namespace ProtoCar
                     pickups[i].onHit(player2);
                     pickups.Remove(pickups[i]);
                 }
+            }
+
+
+            for (int i = 0; i < bullets.Count; i++)
+            {
+                bullets[i].update(gameTime);
+
+
+       
+
+             //   Console.Clear();
+            //    Console.WriteLine(bullets[i].boundingSphere.Center);
+
+                if (bullets[i].boundingSphere.Intersects(b1))
+                {
+                    player1.drawEffectDuration = Settings.effectDuration;
+                    Game1.explosionSound.Play();
+                    player1.points = Math.Max(player1.points - 1, 0);
+                    bullets.Remove(bullets[i]);
+                    continue;
+                }
+
+                else if (bullets[i].boundingSphere.Intersects(b2))
+                {
+
+                    player2.drawEffectDuration = Settings.effectDuration;
+                    Game1.explosionSound.Play();
+                    player2.points = Math.Max(player2.points - 1, 0);
+                    bullets.Remove(bullets[i]);
+                    continue;
+                }
+
+                else if (bullets[i].lifeTime <= 0)
+                {
+                    bullets.Remove(bullets[i]);
+                    continue;
+                }
+
+        
+         
+
             }
 
             //  foreach (Item item in items)
@@ -163,13 +209,20 @@ namespace ProtoCar
             foreach(APickUp pickup in pickups)
                 pickup.draw(bEffect.View, bEffect.Projection);
 
+            foreach (Bullet b in bullets)
+                b.draw(bEffect.Projection, bEffect.View);
+            
+
+
             Game1.skydome.Draw(Game1.gManager.GraphicsDevice, skydomeMatrix, bEffect.View, bEffect.Projection);
 
            
             Game1.gManager.GraphicsDevice.SetDepthStencilState(Game1.gManager.GraphicsDevice.DepthStencilStates.None);
             Game1.gManager.GraphicsDevice.SetBlendState(Game1.alphaBlend);
+
             foreach (BillboardParticle p in particles)
                 p.draw(bEffect.View, bEffect.Projection, player1.cam.getPosition(), player1.cam.getDirection());
+
             Game1.gManager.GraphicsDevice.SetBlendState(null);
             Game1.gManager.GraphicsDevice.SetDepthStencilState(Game1.gManager.GraphicsDevice.DepthStencilStates.Default);
  
@@ -196,12 +249,18 @@ namespace ProtoCar
                 foreach (APickUp pickup in pickups)
                     pickup.draw(bEffect.View, bEffect.Projection);
 
+                foreach (Bullet b in bullets)
+                    b.draw(bEffect.Projection, bEffect.View);
+
+
                 Game1.skydome.Draw(Game1.gManager.GraphicsDevice, skydomeMatrix, bEffect.View, bEffect.Projection);
 
                 Game1.gManager.GraphicsDevice.SetDepthStencilState(Game1.gManager.GraphicsDevice.DepthStencilStates.None);
                 Game1.gManager.GraphicsDevice.SetBlendState(Game1.alphaBlend);
+
                 foreach (BillboardParticle p in particles)
                     p.draw(bEffect.View, bEffect.Projection, player2.cam.getPosition(), player2.cam.getDirection());
+
                 Game1.gManager.GraphicsDevice.SetBlendState(null);
                 Game1.gManager.GraphicsDevice.SetDepthStencilState(Game1.gManager.GraphicsDevice.DepthStencilStates.Default);
 
@@ -239,10 +298,10 @@ namespace ProtoCar
 
 
                 if (player1.drawEffectDuration >= 0)
-                    Game1.spriteBatch.Draw(Game1.hitEffectTexture, new Rectangle((int)viewport1.X, (int)viewport1.Y, (int)viewport1.Width, (int)viewport1.Height), Color.White * Math.Max((float)player1.drawEffectDuration, 0));
+                    Game1.spriteBatch.Draw(Game1.hitEffectTexture, new Rectangle((int)viewport1.X, (int)viewport1.Y, (int)viewport1.Width, (int)viewport1.Height), Color.Red * Math.Max((float)player1.drawEffectDuration, 0));
 
                 if(player2.drawEffectDuration >= 0)
-                    Game1.spriteBatch.Draw(Game1.hitEffectTexture, new Rectangle((int)viewport2.X, (int)viewport2.Y, (int)viewport2.Width, (int)viewport2.Height), Color.White * Math.Max((float)player2.drawEffectDuration, 0));
+                    Game1.spriteBatch.Draw(Game1.hitEffectTexture, new Rectangle((int)viewport2.X, (int)viewport2.Y, (int)viewport2.Width, (int)viewport2.Height), Color.Red * Math.Max((float)player2.drawEffectDuration, 0));
 
                 Game1.spriteBatch.End();
             }

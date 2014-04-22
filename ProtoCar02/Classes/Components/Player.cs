@@ -60,16 +60,41 @@ namespace ProtoCar
          //   else if (direction.LengthSquared() < 0.001)
          //       direction = Vector3.Zero;
 
+           
+
             if (controler.speedPressed() && boostEnergy > 0)
             {
-                boostEnergy -= gameTime.ElapsedGameTime.TotalSeconds;
-                speed = 10f;
-
-                //TODO: make more beautiful:
-                Sandbox.particles.Add(new BillboardParticle(Game1.flameTexture, 0.01f, position, Vector3.Up));
+                boostEnergy -= gameTime.ElapsedGameTime.TotalSeconds * 0.75;
+                speed = 5f;
 
                 if (boostEnergy <= 0)
                     speed = 1.0f;
+                //TODO: make more beautiful:
+
+                for (int i = 0; i < Settings.numSmokeParticles; i++)
+                {
+                    float randX = (float)(Game1.random.NextDouble() - 0.5) * 2 * 20;
+                    float randY = (float)(Game1.random.NextDouble() - 0.5) * 2 * 20;
+
+                    Vector3 targetPos = this.position + new Vector3(randX, 0, randY);
+                    Vector3 helpDir = targetPos - this.position;
+                    helpDir.Normalize();
+                    helpDir += Vector3.UnitY * (float)Game1.random.NextDouble();
+
+                    BillboardParticle bPart = new BillboardParticle(Game1.flameTexture, 0.01f, position, helpDir, 0.75f);
+                    bPart.rotate = true;
+                    bPart.rotation = (float)(Game1.random.NextDouble() * Math.PI * 2);
+                    bPart.rotationSpeed = (float)Game1.random.NextDouble() * 0.05f;
+
+                    if (Game1.random.NextDouble() < 0.5)
+                        bPart.rotationSpeed *= -1;
+
+                    //   bPart.bEffect.DiffuseColor = new Vector4(0.25f, 0.25f, 0.25f, 0);
+
+                    Sandbox.particles.Add(bPart);
+                }
+
+            
             }
 
             else if (!controler.speedPressed())
@@ -94,6 +119,17 @@ namespace ProtoCar
         
             world = Matrix.RotationYawPitchRoll(cam.rotation.Y, cam.rotation.X, 0) * Matrix.Translation(this.position);
 
+
+            Matrix rotationM = Matrix.RotationY(cam.rotation.Y);
+            Vector3 rotation = Helper.Transform(-Vector3.UnitZ, ref rotationM);
+
+            if (controler.shoot() && this.boostEnergy > 0)
+            {
+                this.boostEnergy -= gameTime.ElapsedGameTime.TotalSeconds * 3;
+                Sandbox.bullets.Add(new Bullet(this.position + rotation * 2, rotation));
+                Game1.laserSound.Play();
+            }
+
             bEffect.World = world;
             bEffect.View = cam.view;
             bEffect.Projection = cam.projection;
@@ -102,7 +138,29 @@ namespace ProtoCar
         public void addPoints(int points)
         {
             this.points += points;
-            this.drawEffectDuration = Settings.effectDuration;
+
+            for (int i = 0; i < Settings.numStarParticles; i++)
+            {
+                float randX = (float)(Game1.random.NextDouble() - 0.5) * 2 * 20;
+                float randY = (float)(Game1.random.NextDouble() - 0.5) * 2 * 20;
+
+                Vector3 targetPos = this.position + new Vector3(randX, 0, randY);
+                Vector3 helpDir = targetPos - this.position;
+                helpDir.Normalize();
+                helpDir += Vector3.UnitY * (float)Game1.random.NextDouble();
+
+                BillboardParticle tmpParticle = new BillboardParticle(Game1.starTexture, (float)Game1.random.NextDouble() / 15.0f, this.position, helpDir, 0.5f);
+                tmpParticle.bEffect.DiffuseColor = new Vector4(1,1,0,0);
+                tmpParticle.rotation = (float)(Game1.random.NextDouble() * Math.PI * 2.0);
+                tmpParticle.rotate = true;
+                tmpParticle.rotationSpeed = 0.1f;
+                tmpParticle.lifeTime = 1.5;
+
+                if (Game1.random.NextDouble() < 0.5)
+                    tmpParticle.rotationSpeed *= -1;
+
+                Sandbox.particles.Add(tmpParticle);
+            }
         }
 
 

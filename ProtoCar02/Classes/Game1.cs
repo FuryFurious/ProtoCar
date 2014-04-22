@@ -38,12 +38,15 @@ namespace ProtoCar
         public static Texture2D hitEffectTexture;
         public static Texture2D pixelTexture;
         public static Texture2D flameTexture;
+        public static Texture2D starTexture;
         
         public static SpriteFont font;
 
         public static Model skydome;
 
         public static SoundEffect soundHit;
+        public static SoundEffect laserSound;
+        public static SoundEffect explosionSound;
 
         public static Random random = new Random();
 
@@ -52,6 +55,9 @@ namespace ProtoCar
         EGameState prevState;
 
         IGameState gameState;
+
+
+        public static RenderTarget2D customTarget;
 
         public Game1()
         {
@@ -65,17 +71,10 @@ namespace ProtoCar
             gManager.PreferredBackBufferWidth = Settings.windowWidth; 
             gManager.PreferredBackBufferHeight = Settings.windowHeight;
 
-            //CARE: when fullscreened the mouse starts to bug out: (wrong reset-coordinates?)
-         
-            
-
-          
-
         }
 
         private void gainedFocus(object sender, EventArgs e)
         {
-           
             active = true;
         }
 
@@ -113,7 +112,10 @@ namespace ProtoCar
             pixelTexture = Content.Load<Texture2D>("pixel");
             flameTexture = Content.Load<Texture2D>("flameParticle");
 
+            explosionSound = Content.Load<SoundEffect>("gotHit.wav");
+            laserSound = Content.Load<SoundEffect>("laserShot.wav");
 
+            starTexture = Content.Load<Texture2D>("star");
 
             alphaBlend = BlendState.New(GraphicsDevice, 
                                                 SharpDX.Direct3D11.BlendOption.SourceAlpha,         //sourceBlend
@@ -128,10 +130,7 @@ namespace ProtoCar
             var blendStateDesc = SharpDX.Direct3D11.BlendStateDescription.Default();
             opaqueBlend = BlendState.New(GraphicsDevice, "Opaque", blendStateDesc);
 
-
-
             handleNewGameState();
-
         }
 
         protected override void Update(GameTime gameTime)

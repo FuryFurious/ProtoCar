@@ -15,6 +15,8 @@ namespace ProtoCar
         bool zoomOut();
         bool speedPressed();
 
+        bool shoot();
+
         void clamp(float xMin, float xMax);
         void update();
 
@@ -101,6 +103,12 @@ namespace ProtoCar
         {
             return Game1.mouseState.WheelDelta - Game1.oldMouseState.WheelDelta < 0;
         }
+
+
+        public bool shoot()
+        {
+            return Game1.keyboardState.IsKeyPressed(Keys.Space);
+        }
     }
 
     public class PlayerArrow : PlayerController
@@ -179,6 +187,12 @@ namespace ProtoCar
         {
            return Game1.mouseState.WheelDelta - Game1.oldMouseState.WheelDelta < 0;
         }
+
+
+        public bool shoot()
+        {
+            return Game1.keyboardState.IsKeyPressed(Keys.Space);
+        }
     }
 
     public class PlayerGamepad : PlayerController
@@ -240,6 +254,12 @@ namespace ProtoCar
         public bool zoomOut()
         {
             return gamepad.isPressed(SharpDX.XInput.GamepadButtonFlags.DPadDown);
+        }
+
+
+        public bool shoot()
+        {
+            throw new NotImplementedException();
         }
     }
 
