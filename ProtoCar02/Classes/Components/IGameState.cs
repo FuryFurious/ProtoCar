@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ProtoCar
 {
-    public enum EGameState {None, Sandbox, InGame };
+    public enum EGameState {None, MainMenu, GameOver, Sandbox, GameStateCount};
 
     interface IGameState
     {

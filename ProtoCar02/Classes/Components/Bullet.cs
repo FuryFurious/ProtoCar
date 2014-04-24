@@ -13,7 +13,6 @@ namespace ProtoCar
     class Bullet
     {
         public BoundingSphere boundingSphere;
-     //   public double lifeTime = 10;
 
         GeometricPrimitive sphere;
         BasicEffect effect;

@@ -51,13 +51,10 @@ namespace ProtoCar
         public static Random random = new Random();
 
         //assign this variable, to start with a different gameState
-        EGameState currentState = EGameState.Sandbox;
+        EGameState currentState = EGameState.MainMenu;
         EGameState prevState;
 
         IGameState gameState;
-
-
-        public static RenderTarget2D customTarget;
 
         public Game1()
         {
@@ -140,10 +137,6 @@ namespace ProtoCar
             oldMouseState = mouseState;
             mouseState = mouseManager.GetState();
 
-
-            if (keyboardState.IsKeyDown(Keys.Escape))
-                Exit();
-
             currentState = gameState.update(gameTime);
 
             if (currentState != prevState)
@@ -173,12 +166,27 @@ namespace ProtoCar
 
             switch (currentState)
             {
-                case EGameState.InGame:
-                    gameState = new InGame();
-                    break;
 
                 case EGameState.Sandbox:
                     gameState = new Sandbox();
+                    break;
+
+                case EGameState.MainMenu:
+                    gameState = new MainMenu();
+                    break;
+
+                case EGameState.GameOver:
+
+                    int p1 = 0;
+                    int p2 = 0;
+
+                    if (gameState != null)
+                    {
+                        p1 = (gameState as Sandbox).player1.points;
+                        p2 = (gameState as Sandbox).player2.points;
+                    }
+              
+                    gameState = new GameOver(p1, p2);
                     break;
 
                 default:

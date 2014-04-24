@@ -18,8 +18,8 @@ namespace ProtoCar
     class Sandbox : IGameState
     {
         DateTime startTime;
-        Player player1;
-        Player player2;
+        public Player player1;
+        public Player player2;
 
         List<Item> items;
 
@@ -60,8 +60,6 @@ namespace ProtoCar
         public void init()
         {
 
-          //  bullets.Add(new Bullet(new Vector3(0, 0, 0), new Vector3(0, 0, 0)));
-
             bEffect.EnableDefaultLighting();
             bEffect.TextureEnabled = true;
             bEffect.Texture = Game1.stoneTextureBig;
@@ -73,13 +71,16 @@ namespace ProtoCar
 
 
             items = new List<Item>();// { new Item(new Vector3(0, 0, 10)) };
-            startTime = DateTime.Now.AddMinutes(3.5);
+            startTime = DateTime.Now.AddMinutes(Settings.roundDuration);
 
             groundPlane = GeometricPrimitive.Plane.New(Game1.gManager.GraphicsDevice, 360.0f, 360.0f, 1, false);
         }
 
         public EGameState update(GameTime gameTime)
         {
+            if (Game1.keyboardState.IsKeyPressed(Keys.Escape))
+                return EGameState.GameOver;
+
             respawnCount -= gameTime.ElapsedGameTime.TotalSeconds;
 
             for (int i = 0; i < particles.Count; i++)
@@ -94,7 +95,7 @@ namespace ProtoCar
             }
 
             if (startTime < DateTime.Now)
-                return EGameState.None;
+                return EGameState.GameOver;
 
             if (respawnCount <= 0)
             {
@@ -212,12 +213,9 @@ namespace ProtoCar
             foreach (Bullet b in bullets)
                 b.draw(bEffect.Projection, bEffect.View);
             
-
-
             Game1.skydome.Draw(Game1.gManager.GraphicsDevice, skydomeMatrix, bEffect.View, bEffect.Projection);
 
-           
-            Game1.gManager.GraphicsDevice.SetDepthStencilState(Game1.gManager.GraphicsDevice.DepthStencilStates.None);
+            Game1.gManager.GraphicsDevice.SetDepthStencilState(Game1.gManager.GraphicsDevice.DepthStencilStates.DepthRead);
             Game1.gManager.GraphicsDevice.SetBlendState(Game1.alphaBlend);
 
             foreach (BillboardParticle p in particles)
@@ -225,6 +223,7 @@ namespace ProtoCar
 
             Game1.gManager.GraphicsDevice.SetBlendState(null);
             Game1.gManager.GraphicsDevice.SetDepthStencilState(Game1.gManager.GraphicsDevice.DepthStencilStates.Default);
+        
  
             
             if (Settings.enablePlayer2)
@@ -255,7 +254,7 @@ namespace ProtoCar
 
                 Game1.skydome.Draw(Game1.gManager.GraphicsDevice, skydomeMatrix, bEffect.View, bEffect.Projection);
 
-                Game1.gManager.GraphicsDevice.SetDepthStencilState(Game1.gManager.GraphicsDevice.DepthStencilStates.None);
+                Game1.gManager.GraphicsDevice.SetDepthStencilState(Game1.gManager.GraphicsDevice.DepthStencilStates.DepthRead);
                 Game1.gManager.GraphicsDevice.SetBlendState(Game1.alphaBlend);
 
                 foreach (BillboardParticle p in particles)

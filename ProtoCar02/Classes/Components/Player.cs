@@ -44,6 +44,7 @@ namespace ProtoCar
         public void update(GameTime gameTime)
         {
             controler.update();
+            boostEnergy += Settings.energyRegeneration;
 
             drawEffectDuration -= gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -64,7 +65,7 @@ namespace ProtoCar
 
             if (controler.speedPressed() && boostEnergy > 0)
             {
-                boostEnergy -= gameTime.ElapsedGameTime.TotalSeconds * 0.75;
+                boostEnergy -= Settings.boostCost;
                 speed = 5f;
 
                 if (boostEnergy <= 0)
@@ -125,7 +126,7 @@ namespace ProtoCar
 
             if (controler.shoot() && this.boostEnergy > 0)
             {
-                this.boostEnergy -= gameTime.ElapsedGameTime.TotalSeconds * 3;
+                this.boostEnergy -= Settings.shootCost;
                 Sandbox.bullets.Add(new Bullet(this.position + rotation * 2, rotation));
                 Game1.laserSound.Play();
             }

@@ -49,7 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\BillboardParticle.cs" />
+    <Compile Include="Classes\Components\BillboardParticle.cs" />
     <Compile Include="Classes\Components\APickUp.cs" />
     <Compile Include="Classes\Cameras\FirstPersonCamera.cs" />
     <Compile Include="Classes\Cameras\ThirdPersonCamera.cs" />
@@ -57,8 +57,9 @@
     <Compile Include="Classes\Components\Bullet.cs" />
     <Compile Include="Classes\Components\CustomGamepad.cs" />
     <Compile Include="Classes\Components\PointPickUp.cs" />
+    <Compile Include="Classes\GameStates\GameOver.cs" />
+    <Compile Include="Classes\GameStates\MainMenu.cs" />
     <Compile Include="Classes\Game1.cs" />
-    <Compile Include="Classes\GameStates\InGame.cs" />
     <Compile Include="Classes\GameStates\Sandbox.cs" />
     <Compile Include="Classes\Helper.cs" />
     <Compile Include="Classes\Components\IGameState.cs" />

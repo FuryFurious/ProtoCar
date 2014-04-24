@@ -191,7 +191,7 @@ namespace ProtoCar
 
         public bool shoot()
         {
-            return Game1.keyboardState.IsKeyPressed(Keys.Space);
+            return Game1.keyboardState.IsKeyPressed(Keys.Enter);
         }
     }
 
@@ -259,7 +259,7 @@ namespace ProtoCar
 
         public bool shoot()
         {
-            throw new NotImplementedException();
+            return this.gamepad.isClicked(SharpDX.XInput.GamepadButtonFlags.B);
         }
     }
 
